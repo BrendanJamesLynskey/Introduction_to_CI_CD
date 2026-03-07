@@ -4,10 +4,6 @@ An interactive Reveal.js presentation covering Continuous Integration and Contin
 
 ## ▶ [Open the Presentation](https://brendanjameslynskey.github.io/Introduction_to_CI_CD/)
 
-> **Setup:** Enable GitHub Pages (Settings → Pages → Deploy from `main` branch, `/ (root)` directory), then open the Pages URL in any browser.
->
-> Alternatively, open `index.html` locally in any browser — the presentation works offline after first load.
-
 ---
 
 ## Contents
