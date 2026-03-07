@@ -2,7 +2,7 @@
 
 An interactive Reveal.js presentation covering Continuous Integration and Continuous Delivery/Deployment — from the problem it solves through to deployment strategies, observability, and DORA metrics.
 
-## ▶ [Open the Presentation](./index.html)
+## ▶ [Open the Presentation](https://brendanjameslynskey.github.io/Introduction_to_CI_CD/)
 
 > **Setup:** Enable GitHub Pages (Settings → Pages → Deploy from `main` branch, `/ (root)` directory), then open the Pages URL in any browser.
 >
