@@ -272,7 +272,7 @@
   }
 
   /* ── Override reveal defaults ─────────────────────────── */
-  .reveal section { height: 100%; }
+  .reveal section { height: 100%; overflow-y: auto !important; align-items: flex-start !important; justify-content: flex-start !important; }
   .reveal .slides section { padding: 1.5em 2em; box-sizing: border-box; }
   .reveal .progress { color: var(--amber); }
   .reveal .controls { color: var(--amber); }
@@ -1209,10 +1209,25 @@ jobs:
     backgroundTransition: 'fade',
     center: false,
     width: 1280,
-    height: 720,
-    margin: 0.04,
+    height: 900,
+    margin: 0.02,
     plugins: [ RevealHighlight, RevealNotes ]
   });
+</script>
+<script>
+(function(){
+  var h = Reveal.getConfig().height || 900;
+  var m = Reveal.getConfig().margin || 0.02;
+  var maxH = Math.floor(h * (1 - 2 * m)) + 'px';
+  function fixSlides(){
+    document.querySelectorAll('.reveal .slides>section,.reveal .slides>section>section').forEach(function(s){
+      s.style.display = 'block';
+      s.style.maxHeight = maxH;
+    });
+  }
+  Reveal.on('ready', fixSlides);
+  Reveal.on('slidechanged', fixSlides);
+})();
 </script>
 </body>
 </html>
