@@ -11,277 +11,127 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/theme/black.min.css">
 <style>
   :root {
-    --bg:        #0a0a0f;
-    --surface:   #12121a;
-    --surface2:  #1a1a26;
-    --amber:     #f59e0b;
-    --amber-dim: #92600a;
-    --green:     #10b981;
-    --green-dim: #065f46;
-    --purple:    #a78bfa;
-    --purple-dim:#4c1d95;
-    --blue:      #38bdf8;
-    --blue-dim:  #0c4a6e;
-    --red:       #f87171;
-    --text:      #e2e8f0;
-    --text-dim:  #94a3b8;
-    --border:    #2d2d44;
+    --amber:  #f5a623;
+    --green:  #4ecb8d;
+    --purple: #a78bfa;
+    --blue:   #60a5fa;
+    --red:    #f87171;
+    --bg:     #0a0a0f;
+    --bg2:    #10101a;
+    --bg3:    #181824;
+    --border: #2a2a3a;
+    --text:   #e8e8f0;
+    --muted:  #8888a8;
   }
 
   .reveal-viewport { background: var(--bg); }
+  .reveal .slides section { background: transparent; }
 
-  .reveal {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 38px;
-    color: var(--text);
-    background: var(--bg);
-  }
+  .reveal { font-family: 'DM Sans', sans-serif; color: var(--text); }
+  .reveal h1, .reveal h2, .reveal h3 { font-family: 'Playfair Display', serif; font-weight: 700; }
+  .reveal h1 { font-size: 1.6em; color: var(--amber); line-height: 1.1; }
+  .reveal h2 { font-size: 1.1em; color: var(--amber); margin-bottom: .2em; }
+  .reveal h3 { font-size: .78em; color: var(--green); margin-bottom: .15em; }
+  .reveal p  { font-size: .56em; line-height: 1.45; color: var(--text); }
+  .reveal li { font-size: .54em; line-height: 1.45; margin-bottom: .1em; }
+  .reveal code { font-family: 'JetBrains Mono', monospace; font-size: .72em; }
+  .reveal pre  { box-shadow: none; background: var(--bg3); border: 1px solid var(--border);
+                 border-radius: 6px; padding: .3em .5em; margin: .25em 0; }
+  .reveal pre code { font-size: .52em; line-height: 1.35; background: transparent; color: #cdd6f4; }
 
-  .reveal .slides { text-align: left; }
-
-  /* ── Headings ───────────────────────────────────────── */
-  .reveal h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.9em;
-    font-weight: 700;
-    color: var(--amber);
-    letter-spacing: -0.01em;
-    line-height: 1.1;
-    margin-bottom: 0.3em;
-    text-align: left;
-  }
-  .reveal h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.35em;
-    font-weight: 700;
-    color: var(--amber);
-    margin-bottom: 0.5em;
-    text-align: left;
-  }
-  .reveal h3 {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.85em;
-    font-weight: 600;
-    color: var(--text-dim);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    margin-bottom: 0.4em;
-  }
-
-  /* ── Body text ──────────────────────────────────────── */
-  .reveal p { font-size: 0.72em; line-height: 1.65; color: var(--text); margin: 0.3em 0; }
-  .reveal li { font-size: 0.7em; line-height: 1.7; color: var(--text); }
-  .reveal ul { margin: 0.2em 0 0.2em 1.2em; }
-  .reveal ul ul li { font-size: 0.88em; color: var(--text-dim); }
-
-  /* ── Code ───────────────────────────────────────────── */
-  .reveal code, .reveal pre {
-    font-family: 'JetBrains Mono', monospace;
-    background: var(--surface);
-    border-radius: 4px;
-  }
-  .reveal code { font-size: 0.65em; padding: 0.1em 0.4em; color: var(--green); }
-  .reveal pre {
-    font-size: 0.5em;
-    padding: 0.8em 1.2em;
-    border: 1px solid var(--border);
-    border-left: 3px solid var(--green);
-    box-shadow: none;
-    white-space: pre;
-    overflow: visible;
-    width: 100%;
-  }
-  .reveal pre code {
-    background: none;
-    padding: 0;
-    color: #c3e88d;
-    font-size: 1em;
-    white-space: pre;
-  }
-
-  /* ── Accent spans ───────────────────────────────────── */
-  .amber  { color: var(--amber); }
-  .green  { color: var(--green); }
-  .purple { color: var(--purple); }
-  .blue   { color: var(--blue); }
-  .red    { color: var(--red); }
-  .dim    { color: var(--text-dim); }
-
-  /* ── Layout helpers ─────────────────────────────────── */
-  .cols { display: flex; gap: 1.4em; align-items: flex-start; }
-  .col  { flex: 1; }
-  .col-40 { flex: 0 0 40%; }
-  .col-60 { flex: 0 0 60%; }
-
-  /* ── Cards ──────────────────────────────────────────── */
-  .card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 0.7em 1em;
-    margin: 0.3em 0;
-  }
-  .card-amber { border-left: 3px solid var(--amber); }
-  .card-green { border-left: 3px solid var(--green); }
-  .card-purple{ border-left: 3px solid var(--purple); }
-  .card-blue  { border-left: 3px solid var(--blue); }
-  .card-red   { border-left: 3px solid var(--red); }
-  .card h3 { margin: 0 0 0.3em 0; font-size: 0.7em; }
-  .card p, .card li { font-size: 0.64em; }
-
-  /* ── Pill badges ────────────────────────────────────── */
-  .badge {
-    display: inline-block;
-    padding: 0.15em 0.6em;
-    border-radius: 20px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.55em;
-    font-weight: 500;
-    margin: 0.1em 0.15em;
-    vertical-align: middle;
-  }
-  .badge-amber  { background: var(--amber-dim);  color: var(--amber);  border: 1px solid var(--amber); }
-  .badge-green  { background: var(--green-dim);  color: var(--green);  border: 1px solid var(--green); }
-  .badge-purple { background: var(--purple-dim); color: var(--purple); border: 1px solid var(--purple); }
-  .badge-blue   { background: var(--blue-dim);   color: var(--blue);   border: 1px solid var(--blue); }
-  .badge-red    { background: #450a0a;            color: var(--red);    border: 1px solid var(--red); }
-
-  /* ── Pipeline diagram ───────────────────────────────── */
-  .pipeline {
-    display: flex;
-    align-items: center;
-    gap: 0;
-    margin: 0.6em 0;
-    flex-wrap: nowrap;
-  }
-  .pipe-stage {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 0.45em 0.65em;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.52em;
-    font-weight: 600;
-    text-align: center;
-    flex: 1;
-    min-width: 0;
-  }
-  .pipe-stage .icon { font-size: 1.4em; display: block; margin-bottom: 0.2em; }
-  .pipe-stage.amber  { border-color: var(--amber);  color: var(--amber); }
-  .pipe-stage.green  { border-color: var(--green);  color: var(--green); }
-  .pipe-stage.purple { border-color: var(--purple); color: var(--purple); }
-  .pipe-stage.blue   { border-color: var(--blue);   color: var(--blue); }
-  .pipe-arrow {
-    color: var(--text-dim);
-    font-size: 0.65em;
-    padding: 0 0.2em;
-    flex-shrink: 0;
-  }
-
-  /* ── Comparison table ───────────────────────────────── */
-  .ctable { width: 100%; border-collapse: collapse; font-size: 0.6em; margin: 0.5em 0; }
-  .ctable th {
-    background: var(--surface2);
-    color: var(--amber);
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 600;
-    padding: 0.5em 0.8em;
-    border-bottom: 1px solid var(--amber-dim);
-    text-align: left;
-  }
-  .ctable td {
-    padding: 0.45em 0.8em;
+  /* ── slide chrome ── */
+  .slide-hdr {
+    display: flex; align-items: center; gap: .4em;
     border-bottom: 1px solid var(--border);
-    color: var(--text);
-    vertical-align: top;
+    padding-bottom: .2em; margin-bottom: .3em;
   }
-  .ctable tr:last-child td { border-bottom: none; }
-  .ctable tr:hover td { background: var(--surface); }
-
-  /* ── Flow diagram ───────────────────────────────────── */
-  .flow-box {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 0.5em 0.9em;
-    font-size: 0.6em;
-    text-align: center;
-    margin: 0.15em 0;
-  }
-  .flow-arrow { text-align: center; color: var(--text-dim); font-size: 0.6em; line-height: 1; }
-
-  /* ── Timeline ───────────────────────────────────────── */
-  .timeline { position: relative; padding-left: 1.8em; }
-  .timeline::before {
-    content: '';
-    position: absolute;
-    left: 0.55em;
-    top: 0.3em;
-    bottom: 0.3em;
-    width: 2px;
-    background: var(--border);
-  }
-  .tl-item { position: relative; margin-bottom: 0.7em; }
-  .tl-dot {
-    position: absolute;
-    left: -1.5em;
-    top: 0.15em;
-    width: 0.75em;
-    height: 0.75em;
-    border-radius: 50%;
-    border: 2px solid var(--amber);
-    background: var(--bg);
-  }
-  .tl-dot.green  { border-color: var(--green); }
-  .tl-dot.purple { border-color: var(--purple); }
-  .tl-dot.blue   { border-color: var(--blue); }
-  .tl-item p { font-size: 0.62em; margin: 0.05em 0; }
-  .tl-item strong { color: var(--amber); font-size: 0.68em; }
-
-  /* ── Slide decoration ───────────────────────────────── */
-  .slide-num {
-    position: absolute;
-    bottom: 0.5em;
-    right: 0.8em;
+  .slide-hdr .tag {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.4em;
-    color: var(--text-dim);
-    opacity: 0.5;
+    font-size: .42em; font-weight: 500;
+    color: var(--bg); background: var(--amber);
+    padding: .1em .4em; border-radius: 3px;
+    letter-spacing: .04em;
   }
+  .slide-hdr h2 { margin: 0; font-size: .95em; }
 
-  /* ── Note blocks ─────────────────────────────────────── */
-  .note-block {
-    background: var(--surface2);
-    border: 1px solid var(--blue-dim);
-    border-left: 3px solid var(--blue);
-    border-radius: 6px;
-    padding: 0.5em 0.9em;
-    font-size: 0.62em;
-    color: var(--text-dim);
-    margin: 0.5em 0;
-  }
-  .warn-block {
-    background: #1a1200;
-    border: 1px solid var(--amber-dim);
-    border-left: 3px solid var(--amber);
-    border-radius: 6px;
-    padding: 0.5em 0.9em;
-    font-size: 0.62em;
-    color: var(--text-dim);
-    margin: 0.5em 0;
-  }
+  /* ── two-column ── */
+  .cols   { display: grid; gap: .5em; }
+  .cols-2 { grid-template-columns: 1fr 1fr; }
+  .cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+  .cols-6040 { grid-template-columns: 6fr 4fr; }
+  .cols-4060 { grid-template-columns: 4fr 6fr; }
 
-  /* ── Override reveal defaults ─────────────────────────── */
-  .reveal section { height: 100%; overflow-y: auto !important; align-items: flex-start !important; justify-content: flex-start !important; }
-  .reveal .slides section { padding: 1.5em 2em; box-sizing: border-box; }
-  .reveal .progress { color: var(--amber); }
-  .reveal .controls { color: var(--amber); }
-
-  /* ── Responsive tweaks ───────────────────────────────── */
-  @media (max-width: 768px) {
-    .cols { flex-direction: column; }
-    .pipeline { flex-wrap: wrap; }
+  /* ── cards ── */
+  .card {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: 6px; padding: .35em .6em;
   }
+  .card.amber { border-left: 3px solid var(--amber); }
+  .card.green { border-left: 3px solid var(--green); }
+  .card.purple{ border-left: 3px solid var(--purple); }
+  .card.blue  { border-left: 3px solid var(--blue); }
+  .card.red   { border-left: 3px solid var(--red); }
+  .card h3 { font-size: .64em; margin: 0 0 .12em; }
+  .card p  { font-size: .52em; margin: 0; color: #b8b8d0; }
+  .card ul { margin: 0; padding-left: 1em; }
+  .card li { font-size: .52em; color: #b8b8d0; margin-bottom: .02em; }
+
+  /* ── table ── */
+  .reveal table { width: 100%; border-collapse: collapse; font-size: .5em; }
+  .reveal table th { background: var(--bg3); color: var(--amber); font-weight: 600;
+                     padding: .2em .4em; border: 1px solid var(--border); text-align: left; }
+  .reveal table td { padding: .18em .4em; border: 1px solid var(--border); color: #ccc; }
+  .reveal table tr:nth-child(even) td { background: #0e0e18; }
+
+  /* ── accent spans ── */
+  .a  { color: var(--amber); font-weight: 600; }
+  .g  { color: var(--green); font-weight: 600; }
+  .p  { color: var(--purple); font-weight: 600; }
+  .b  { color: var(--blue); font-weight: 600; }
+  .r  { color: var(--red); font-weight: 600; }
+  .mono { font-family: 'JetBrains Mono', monospace; }
+
+  /* ── SVG graph diagrams ── */
+  svg.diagram { display: block; margin: 0 auto; overflow: visible; }
+
+  /* ── pill badges ── */
+  .pill {
+    display: inline-block; font-family: 'JetBrains Mono', monospace;
+    font-size: .44em; padding: .08em .4em; border-radius: 99px;
+    border: 1px solid; margin: 0 .08em;
+  }
+  .pill.amber { color: var(--amber); border-color: var(--amber); }
+  .pill.green { color: var(--green); border-color: var(--green); }
+  .pill.purple{ color: var(--purple); border-color: var(--purple); }
+  .pill.blue  { color: var(--blue); border-color: var(--blue); }
+
+  /* ── footer — hidden; was overlapping scrollable content ── */
+  .reveal .slide-footer { display: none; }
+  /* title slide special */
+  .title-slide h1 { font-size: 1.8em; }
+  .title-slide .subtitle {
+    font-size: .7em; color: var(--green); font-family: 'DM Sans', sans-serif;
+    font-weight: 300; letter-spacing: .04em; margin: .3em 0 .6em;
+  }
+  .title-slide .meta { font-size: .48em; color: var(--muted); font-family: 'JetBrains Mono', monospace; }
+
+  /* ── super-step animator ── */
+  .ss-row {
+    display: flex; gap: .25em; align-items: center;
+    margin: .1em 0; font-size: .55em; font-family: 'JetBrains Mono', monospace;
+  }
+  .ss-node {
+    padding: .2em .55em; border-radius: 5px; font-size: .9em;
+    background: var(--bg3); border: 1px solid var(--border); color: var(--text);
+  }
+  .ss-node.active { background: #1a2a1a; border-color: var(--green); color: var(--green); }
+  .ss-node.done   { background: #1a1a2a; border-color: var(--purple); color: var(--purple); }
+  .ss-arrow { color: var(--amber); }
+  .ss-label { font-size: .8em; color: var(--muted); margin-left: .3em; }
+
+  /* reduce default margins */
+  .reveal ul, .reveal ol { margin: .15em 0 .15em 1em; }
+.reveal .slides > section { display: flex !important; flex-direction: column !important; overflow-y: auto !important; align-items: stretch !important; justify-content: flex-start !important; }
 </style>
 </head>
 <body>
@@ -289,48 +139,53 @@
 <div class="slides">
 
 
-<!-- ══════════════════════════════════════════════════════
-     SLIDE 01 — TITLE
-     ══════════════════════════════════════════════════════ -->
-<section>
-  <div style="margin-bottom:0.4em;">
-    <span class="badge badge-amber">DevOps</span>
-    <span class="badge badge-green">Automation</span>
-    <span class="badge badge-purple">Software Engineering</span>
+<!-- ═══════════════════════════════ SLIDE 01 — TITLE ═══════════════════════════════ -->
+<section class="title-slide" data-background-color="#0a0a0f">
+  <div style="text-align:left; max-width:820px; margin:0 auto; padding: 1em 0;">
+    <div style="font-family:'JetBrains Mono',monospace; font-size:.5em; color:var(--muted); margin-bottom:.4em; letter-spacing:.1em;">
+      TECHNICAL PRESENTATION
+    </div>
+    <h1>Introduction to<br>CI/CD</h1>
+    <div class="subtitle">Continuous Integration &amp; Continuous Delivery/Deployment</div>
+    <div style="width:60px; height:3px; background:var(--amber); margin-bottom:1.4em;"></div>
+    <div style="display:flex; gap:1.2em; flex-wrap:wrap; margin-bottom:1em;">
+      <span class="pill amber">DevOps</span>
+      <span class="pill green">Automation</span>
+      <span class="pill purple">Software Engineering</span>
+    </div>
+    <div class="ss-row" style="margin-top:0.6em;">
+      <span class="ss-node active">✏️ Code</span>
+      <span class="ss-arrow">→</span>
+      <span class="ss-node active">🔀 Commit</span>
+      <span class="ss-arrow">→</span>
+      <span class="ss-node active">🔨 Build</span>
+      <span class="ss-arrow">→</span>
+      <span class="ss-node active">🧪 Test</span>
+      <span class="ss-arrow">→</span>
+      <span class="ss-node done">📦 Package</span>
+      <span class="ss-arrow">→</span>
+      <span class="ss-node done">🚀 Deploy</span>
+    </div>
+    <p style="max-width:620px; color:#a0a0c0; font-size:.56em; line-height:1.5; margin-top:1em;">
+      Automating the path from a developer's editor to production systems
+    </p>
+    <div class="meta" style="margin-top:1.4em;">
+      Build &nbsp;·&nbsp; Test &nbsp;·&nbsp; Deploy &nbsp;·&nbsp; Repeat
+    </div>
   </div>
-  <h1>Introduction to<br>CI/CD</h1>
-  <p class="dim" style="font-size:0.65em; margin-top:0.2em;">
-    Continuous Integration &amp; Continuous Delivery/Deployment
-  </p>
-  <div style="margin-top:1.4em;" class="pipeline">
-    <div class="pipe-stage amber"><span class="icon">✏️</span>Code</div>
-    <div class="pipe-arrow">▶</div>
-    <div class="pipe-stage amber"><span class="icon">🔀</span>Commit</div>
-    <div class="pipe-arrow">▶</div>
-    <div class="pipe-stage green"><span class="icon">🔨</span>Build</div>
-    <div class="pipe-arrow">▶</div>
-    <div class="pipe-stage green"><span class="icon">🧪</span>Test</div>
-    <div class="pipe-arrow">▶</div>
-    <div class="pipe-stage purple"><span class="icon">📦</span>Package</div>
-    <div class="pipe-arrow">▶</div>
-    <div class="pipe-stage blue"><span class="icon">🚀</span>Deploy</div>
-  </div>
-  <p class="dim" style="font-size:0.55em; margin-top:1.2em;">
-    Automating the path from a developer's editor to production systems
-  </p>
-  <div class="slide-num">01 / 20</div>
 </section>
 
 
-<!-- ══════════════════════════════════════════════════════
-     SLIDE 02 — AGENDA
-     ══════════════════════════════════════════════════════ -->
-<section>
-  <h2>Topics</h2>
-  <div class="cols">
-    <div class="col">
-      <div class="card card-amber">
-        <h3 class="amber">Foundations</h3>
+<!-- ═══════════════════════════════ SLIDE 02 — AGENDA ═══════════════════════════════ -->
+<section data-background-color="#0a0a0f">
+  <div class="slide-hdr">
+    <span class="tag">01</span>
+    <h2>Topics</h2>
+  </div>
+  <div class="cols cols-2">
+    <div>
+      <div class="card amber">
+        <h3 class="a">Foundations</h3>
         <ul>
           <li>The problem CI/CD solves</li>
           <li>Continuous Integration</li>
@@ -338,8 +193,8 @@
           <li>The pipeline concept</li>
         </ul>
       </div>
-      <div class="card card-green" style="margin-top:0.5em;">
-        <h3 class="green">Pipeline Mechanics</h3>
+      <div class="card green" style="margin-top:0.5em;">
+        <h3 class="g">Pipeline Mechanics</h3>
         <ul>
           <li>Stages: build, test, package, deploy</li>
           <li>Triggers and branching strategies</li>
@@ -347,17 +202,17 @@
         </ul>
       </div>
     </div>
-    <div class="col">
-      <div class="card card-purple">
-        <h3 class="purple">Testing in CI</h3>
+    <div>
+      <div class="card purple">
+        <h3 class="p">Testing in CI</h3>
         <ul>
           <li>Test pyramid</li>
           <li>Unit, integration, E2E tests</li>
           <li>Code coverage and quality gates</li>
         </ul>
       </div>
-      <div class="card card-blue" style="margin-top:0.5em;">
-        <h3 class="blue">Tools &amp; Practice</h3>
+      <div class="card blue" style="margin-top:0.5em;">
+        <h3 class="b">Tools &amp; Practice</h3>
         <ul>
           <li>GitHub Actions, GitLab CI, Jenkins</li>
           <li>Docker in CI/CD</li>
@@ -367,20 +222,20 @@
       </div>
     </div>
   </div>
-  <div class="slide-num">02 / 20</div>
 </section>
 
 
-<!-- ══════════════════════════════════════════════════════
-     SLIDE 03 — THE PROBLEM
-     ══════════════════════════════════════════════════════ -->
-<section>
-  <h2>The Problem: Manual Release Hell</h2>
-  <div class="cols">
-    <div class="col">
-      <p>Before CI/CD, teams faced <span class="amber">integration hell</span> — developers worked in isolation for weeks, then merged everything at once.</p>
-      <div class="card card-red" style="margin-top:0.6em;">
-        <h3 class="red">Symptoms of the old way</h3>
+<!-- ═══════════════════════════════ SLIDE 03 — THE PROBLEM ═══════════════════════════════ -->
+<section data-background-color="#0a0a0f">
+  <div class="slide-hdr">
+    <span class="tag">02</span>
+    <h2>The Problem: Manual Release Hell</h2>
+  </div>
+  <div class="cols cols-2">
+    <div>
+      <p>Before CI/CD, teams faced <span class="a">integration hell</span> — developers worked in isolation for weeks, then merged everything at once.</p>
+      <div class="card red" style="margin-top:0.6em;">
+        <h3 class="r">Symptoms of the old way</h3>
         <ul>
           <li>Merge conflicts across thousands of lines</li>
           <li>"Works on my machine" — environment drift</li>
@@ -390,9 +245,9 @@
         </ul>
       </div>
     </div>
-    <div class="col">
-      <div class="card card-amber">
-        <h3 class="amber">Root causes</h3>
+    <div>
+      <div class="card amber">
+        <h3 class="a">Root causes</h3>
         <ul>
           <li>Long-lived feature branches diverging from main</li>
           <li>Tests run manually, infrequently, or not at all</li>
@@ -400,26 +255,27 @@
           <li>No repeatable, auditable process</li>
         </ul>
       </div>
-      <div class="note-block" style="margin-top:0.6em;">
-        <span class="blue">Key insight:</span> The longer code sits unintegrated, the more expensive integration becomes. CI/CD makes integration a <em>continuous, cheap activity</em> rather than a periodic expensive one.
+      <div class="card blue" style="margin-top:0.6em;">
+        <h3 class="b">Key insight</h3>
+        <p>The longer code sits unintegrated, the more expensive integration becomes. CI/CD makes integration a <em>continuous, cheap activity</em> rather than a periodic expensive one.</p>
       </div>
     </div>
   </div>
-  <div class="slide-num">03 / 20</div>
 </section>
 
 
-<!-- ══════════════════════════════════════════════════════
-     SLIDE 04 — CONTINUOUS INTEGRATION
-     ══════════════════════════════════════════════════════ -->
-<section>
-  <h2>Continuous Integration (CI)</h2>
-  <p>CI is a <span class="amber">practice</span> where developers integrate their changes into a shared branch frequently — ideally multiple times per day — with each integration verified by an automated build and test run.</p>
+<!-- ═══════════════════════════════ SLIDE 04 — CONTINUOUS INTEGRATION ═══════════════════════════════ -->
+<section data-background-color="#0a0a0f">
+  <div class="slide-hdr">
+    <span class="tag">03</span>
+    <h2>Continuous Integration (CI)</h2>
+  </div>
+  <p>CI is a <span class="a">practice</span> where developers integrate their changes into a shared branch frequently — ideally multiple times per day — with each integration verified by an automated build and test run.</p>
 
-  <div class="cols" style="margin-top:0.6em;">
-    <div class="col">
-      <div class="card card-green">
-        <h3 class="green">Core rules of CI</h3>
+  <div class="cols cols-2" style="margin-top:0.6em;">
+    <div>
+      <div class="card green">
+        <h3 class="g">Core rules of CI</h3>
         <ul>
           <li>Maintain a single source repository</li>
           <li>Automate the build</li>
@@ -430,45 +286,35 @@
         </ul>
       </div>
     </div>
-    <div class="col">
-      <div class="flow-box amber" style="border-color:var(--amber); color:var(--amber);">
-        Developer pushes commit
-      </div>
-      <div class="flow-arrow">▼</div>
-      <div class="flow-box green" style="border-color:var(--green);">
-        Pipeline triggered automatically
-      </div>
-      <div class="flow-arrow">▼</div>
-      <div class="flow-box green" style="border-color:var(--green);">
-        Code compiled / linted
-      </div>
-      <div class="flow-arrow">▼</div>
-      <div class="flow-box green" style="border-color:var(--green);">
-        Tests executed
-      </div>
-      <div class="flow-arrow">▼</div>
-      <div class="flow-box" style="border-color:var(--text-dim);">
-        <span class="green">✔ Pass → merge allowed</span> &nbsp;|&nbsp; <span class="red">✘ Fail → developer notified</span>
-      </div>
+    <div>
+      <div class="ss-row"><span class="ss-node active">Developer pushes commit</span></div>
+      <div class="ss-row"><span class="ss-arrow">↓</span></div>
+      <div class="ss-row"><span class="ss-node active">Pipeline triggered automatically</span></div>
+      <div class="ss-row"><span class="ss-arrow">↓</span></div>
+      <div class="ss-row"><span class="ss-node active">Code compiled / linted</span></div>
+      <div class="ss-row"><span class="ss-arrow">↓</span></div>
+      <div class="ss-row"><span class="ss-node active">Tests executed</span></div>
+      <div class="ss-row"><span class="ss-arrow">↓</span></div>
+      <div class="ss-row"><span class="ss-node"><span class="g">✔ Pass → merge allowed</span> &nbsp;|&nbsp; <span class="r">✘ Fail → developer notified</span></span></div>
     </div>
   </div>
-  <div class="slide-num">04 / 20</div>
 </section>
 
 
-<!-- ══════════════════════════════════════════════════════
-     SLIDE 05 — CD: DELIVERY vs DEPLOYMENT
-     ══════════════════════════════════════════════════════ -->
-<section>
-  <h2>Continuous Delivery vs Continuous Deployment</h2>
-  <p>The two CDs are often confused. The distinction is whether the final push to production is <span class="amber">manual</span> or <span class="green">automatic</span>.</p>
+<!-- ═══════════════════════════════ SLIDE 05 — CD: DELIVERY vs DEPLOYMENT ═══════════════════════════════ -->
+<section data-background-color="#0a0a0f">
+  <div class="slide-hdr">
+    <span class="tag">04</span>
+    <h2>Continuous Delivery vs Continuous Deployment</h2>
+  </div>
+  <p>The two CDs are often confused. The distinction is whether the final push to production is <span class="a">manual</span> or <span class="g">automatic</span>.</p>
 
-  <table class="ctable" style="margin-top:0.7em;">
+  <table style="margin-top:0.7em;">
     <thead>
       <tr>
         <th>Aspect</th>
-        <th class="amber">Continuous Delivery</th>
-        <th class="green">Continuous Deployment</th>
+        <th class="a">Continuous Delivery</th>
+        <th class="g">Continuous Deployment</th>
       </tr>
     </thead>
     <tbody>
@@ -479,8 +325,8 @@
       </tr>
       <tr>
         <td>Human gate</td>
-        <td class="amber">Yes — explicit approval step</td>
-        <td class="green">No — fully automated</td>
+        <td class="a">Yes — explicit approval step</td>
+        <td class="g">No — fully automated</td>
       </tr>
       <tr>
         <td>Risk tolerance</td>
@@ -498,65 +344,65 @@
       </tr>
     </tbody>
   </table>
-  <div class="slide-num">05 / 20</div>
 </section>
 
 
-<!-- ══════════════════════════════════════════════════════
-     SLIDE 06 — THE PIPELINE
-     ══════════════════════════════════════════════════════ -->
-<section>
-  <h2>The CI/CD Pipeline</h2>
-  <p>A <span class="amber">pipeline</span> is a sequence of automated stages. Each stage must pass before the next runs. A failure stops the pipeline and notifies the team.</p>
+<!-- ═══════════════════════════════ SLIDE 06 — THE PIPELINE ═══════════════════════════════ -->
+<section data-background-color="#0a0a0f">
+  <div class="slide-hdr">
+    <span class="tag">05</span>
+    <h2>The CI/CD Pipeline</h2>
+  </div>
+  <p>A <span class="a">pipeline</span> is a sequence of automated stages. Each stage must pass before the next runs. A failure stops the pipeline and notifies the team.</p>
 
-  <div class="pipeline" style="margin: 0.9em 0;">
-    <div class="pipe-stage amber"><span class="icon">🔀</span>Source<br><span style="font-size:0.8em;color:var(--text-dim);">push / PR</span></div>
-    <div class="pipe-arrow">▶</div>
-    <div class="pipe-stage amber"><span class="icon">🔨</span>Build<br><span style="font-size:0.8em;color:var(--text-dim);">compile, lint</span></div>
-    <div class="pipe-arrow">▶</div>
-    <div class="pipe-stage green"><span class="icon">🧪</span>Test<br><span style="font-size:0.8em;color:var(--text-dim);">unit, integration</span></div>
-    <div class="pipe-arrow">▶</div>
-    <div class="pipe-stage green"><span class="icon">🔍</span>Analyse<br><span style="font-size:0.8em;color:var(--text-dim);">SAST, coverage</span></div>
-    <div class="pipe-arrow">▶</div>
-    <div class="pipe-stage purple"><span class="icon">📦</span>Package<br><span style="font-size:0.8em;color:var(--text-dim);">Docker, wheel</span></div>
-    <div class="pipe-arrow">▶</div>
-    <div class="pipe-stage blue"><span class="icon">🚧</span>Staging<br><span style="font-size:0.8em;color:var(--text-dim);">E2E, smoke</span></div>
-    <div class="pipe-arrow">▶</div>
-    <div class="pipe-stage blue"><span class="icon">🚀</span>Prod<br><span style="font-size:0.8em;color:var(--text-dim);">deploy / gate</span></div>
+  <div class="ss-row" style="margin: 0.9em 0;">
+    <span class="ss-node active">🔀 Source<br><span class="ss-label">push / PR</span></span>
+    <span class="ss-arrow">→</span>
+    <span class="ss-node active">🔨 Build<br><span class="ss-label">compile, lint</span></span>
+    <span class="ss-arrow">→</span>
+    <span class="ss-node active">🧪 Test<br><span class="ss-label">unit, integration</span></span>
+    <span class="ss-arrow">→</span>
+    <span class="ss-node active">🔍 Analyse<br><span class="ss-label">SAST, coverage</span></span>
+    <span class="ss-arrow">→</span>
+    <span class="ss-node done">📦 Package<br><span class="ss-label">Docker, wheel</span></span>
+    <span class="ss-arrow">→</span>
+    <span class="ss-node done">🚧 Staging<br><span class="ss-label">E2E, smoke</span></span>
+    <span class="ss-arrow">→</span>
+    <span class="ss-node done">🚀 Prod<br><span class="ss-label">deploy / gate</span></span>
   </div>
 
-  <div class="cols">
-    <div class="col">
-      <div class="card card-amber">
-        <h3 class="amber">Key properties</h3>
+  <div class="cols cols-2">
+    <div>
+      <div class="card amber">
+        <h3 class="a">Key properties</h3>
         <ul>
-          <li><span class="amber">Fast feedback</span> — failures caught within minutes</li>
-          <li><span class="amber">Deterministic</span> — same inputs → same outputs</li>
-          <li><span class="amber">Auditable</span> — every run logged, artefacts versioned</li>
+          <li><span class="a">Fast feedback</span> — failures caught within minutes</li>
+          <li><span class="a">Deterministic</span> — same inputs → same outputs</li>
+          <li><span class="a">Auditable</span> — every run logged, artefacts versioned</li>
         </ul>
       </div>
     </div>
-    <div class="col">
-      <div class="card card-blue">
-        <h3 class="blue">Pipeline as code</h3>
+    <div>
+      <div class="card blue">
+        <h3 class="b">Pipeline as code</h3>
         <p>Pipeline definitions live in the repo (e.g. <code>.github/workflows/ci.yml</code>). They are versioned, reviewed, and evolved alongside the application code.</p>
       </div>
     </div>
   </div>
-  <div class="slide-num">06 / 20</div>
 </section>
 
 
-<!-- ══════════════════════════════════════════════════════
-     SLIDE 07 — BUILD STAGE
-     ══════════════════════════════════════════════════════ -->
-<section>
-  <h2>Stage: Build</h2>
-  <div class="cols">
-    <div class="col-60">
-      <p>The build stage converts source code into a <span class="amber">runnable artefact</span> — a compiled binary, a Docker image, a wheel package, or a bundled web app.</p>
-      <div class="card card-amber" style="margin-top:0.5em;">
-        <h3 class="amber">Typical tasks</h3>
+<!-- ═══════════════════════════════ SLIDE 07 — BUILD STAGE ═══════════════════════════════ -->
+<section data-background-color="#0a0a0f">
+  <div class="slide-hdr">
+    <span class="tag">06</span>
+    <h2>Stage: Build</h2>
+  </div>
+  <div class="cols cols-6040">
+    <div>
+      <p>The build stage converts source code into a <span class="a">runnable artefact</span> — a compiled binary, a Docker image, a wheel package, or a bundled web app.</p>
+      <div class="card amber" style="margin-top:0.5em;">
+        <h3 class="a">Typical tasks</h3>
         <ul>
           <li>Dependency resolution (<code>pip install</code>, <code>npm ci</code>, <code>go mod download</code>)</li>
           <li>Compilation / transpilation</li>
@@ -564,11 +410,12 @@
           <li>Generating build artefact(s) with a deterministic version tag</li>
         </ul>
       </div>
-      <div class="warn-block" style="margin-top:0.5em;">
-        <span class="amber">⚠ Use <code>npm ci</code>, not <code>npm install</code></span> in CI. <code>ci</code> is stricter: it uses the lockfile exactly and fails if it would need updating — preventing silent dependency drift.
+      <div class="card amber" style="margin-top:0.5em;">
+        <h3 class="a">⚠ Use <code>npm ci</code>, not <code>npm install</code></h3>
+        <p>in CI. <code>ci</code> is stricter: it uses the lockfile exactly and fails if it would need updating — preventing silent dependency drift.</p>
       </div>
     </div>
-    <div class="col-40">
+    <div>
       <pre><code># GitHub Actions build step
 - name: Install deps
   run: npm ci
@@ -586,105 +433,106 @@
     path: dist/</code></pre>
     </div>
   </div>
-  <div class="slide-num">07 / 20</div>
 </section>
 
 
-<!-- ══════════════════════════════════════════════════════
-     SLIDE 08 — TEST PYRAMID
-     ══════════════════════════════════════════════════════ -->
-<section>
-  <h2>The Test Pyramid</h2>
-  <div class="cols">
-    <div class="col-55" style="flex:0 0 55%;">
-      <p>Mike Cohn's <span class="amber">test pyramid</span> guides how to balance test types. More tests at the base (fast, cheap); fewer at the apex (slow, expensive).</p>
+<!-- ═══════════════════════════════ SLIDE 08 — TEST PYRAMID ═══════════════════════════════ -->
+<section data-background-color="#0a0a0f">
+  <div class="slide-hdr">
+    <span class="tag">07</span>
+    <h2>The Test Pyramid</h2>
+  </div>
+  <div class="cols cols-6040">
+    <div>
+      <p>Mike Cohn's <span class="a">test pyramid</span> guides how to balance test types. More tests at the base (fast, cheap); fewer at the apex (slow, expensive).</p>
 
       <!-- ASCII pyramid rendered with divs -->
       <div style="text-align:center; margin: 0.6em 0; font-family:'JetBrains Mono',monospace; font-size:0.48em; line-height:1.5;">
-        <div style="color:var(--red);    margin:0 auto; width:60%;  background:#1a0505; border:1px solid var(--red);    padding:0.4em; border-radius:4px;">E2E / UI Tests<br><span style="color:var(--text-dim); font-size:0.85em;">few · slow · brittle · high confidence</span></div>
-        <div style="color:var(--purple); margin:0.2em auto; width:78%; background:#140820; border:1px solid var(--purple); padding:0.4em; border-radius:4px;">Integration Tests<br><span style="color:var(--text-dim); font-size:0.85em;">some · moderate speed · test interactions</span></div>
-        <div style="color:var(--green);  margin:0.2em auto; width:96%; background:#071810; border:1px solid var(--green);  padding:0.4em; border-radius:4px;">Unit Tests<br><span style="color:var(--text-dim); font-size:0.85em;">many · fast · isolated · milliseconds each</span></div>
+        <div style="color:var(--red);    margin:0 auto; width:60%;  background:#1a0505; border:1px solid var(--red);    padding:0.4em; border-radius:4px;">E2E / UI Tests<br><span style="color:var(--muted); font-size:0.85em;">few · slow · brittle · high confidence</span></div>
+        <div style="color:var(--purple); margin:0.2em auto; width:78%; background:#140820; border:1px solid var(--purple); padding:0.4em; border-radius:4px;">Integration Tests<br><span style="color:var(--muted); font-size:0.85em;">some · moderate speed · test interactions</span></div>
+        <div style="color:var(--green);  margin:0.2em auto; width:96%; background:#071810; border:1px solid var(--green);  padding:0.4em; border-radius:4px;">Unit Tests<br><span style="color:var(--muted); font-size:0.85em;">many · fast · isolated · milliseconds each</span></div>
       </div>
     </div>
-    <div class="col" style="flex:0 0 42%;">
-      <div class="card card-green">
-        <h3 class="green">Unit tests</h3>
+    <div>
+      <div class="card green">
+        <h3 class="g">Unit tests</h3>
         <p>Test a single function or class in isolation. No I/O, no network. Should run in &lt; 1 s total for a module.</p>
       </div>
-      <div class="card card-purple" style="margin-top:0.4em;">
-        <h3 class="purple">Integration tests</h3>
+      <div class="card purple" style="margin-top:0.4em;">
+        <h3 class="p">Integration tests</h3>
         <p>Test how components work together — e.g. service + database, or two microservices. Use real or containerised dependencies.</p>
       </div>
-      <div class="card card-red" style="margin-top:0.4em;">
-        <h3 class="red">E2E / UI tests</h3>
+      <div class="card red" style="margin-top:0.4em;">
+        <h3 class="r">E2E / UI tests</h3>
         <p>Drive the full stack through a browser or API client. Playwright, Cypress, Selenium. Run last; slowest.</p>
       </div>
     </div>
   </div>
-  <div class="slide-num">08 / 20</div>
 </section>
 
 
-<!-- ══════════════════════════════════════════════════════
-     SLIDE 09 — QUALITY GATES
-     ══════════════════════════════════════════════════════ -->
-<section>
-  <h2>Quality Gates</h2>
-  <p>A <span class="amber">quality gate</span> is a threshold that the pipeline enforces. If the code does not meet the standard, the pipeline fails and the change cannot proceed.</p>
+<!-- ═══════════════════════════════ SLIDE 09 — QUALITY GATES ═══════════════════════════════ -->
+<section data-background-color="#0a0a0f">
+  <div class="slide-hdr">
+    <span class="tag">08</span>
+    <h2>Quality Gates</h2>
+  </div>
+  <p>A <span class="a">quality gate</span> is a threshold that the pipeline enforces. If the code does not meet the standard, the pipeline fails and the change cannot proceed.</p>
 
-  <div class="cols" style="margin-top:0.6em;">
-    <div class="col">
-      <div class="card card-green">
-        <h3 class="green">Coverage gate</h3>
+  <div class="cols cols-2" style="margin-top:0.6em;">
+    <div>
+      <div class="card green">
+        <h3 class="g">Coverage gate</h3>
         <p>Require minimum test coverage — e.g. 80% line or branch coverage. Tools: <code>pytest-cov</code>, <code>nyc</code>, <code>jacoco</code>.</p>
         <pre style="margin-top:0.4em;"><code>coverage: 82.4%  ✔ (≥ 80%)
 branch:   76.1%  ✘ (< 75%)  → FAIL</code></pre>
       </div>
     </div>
-    <div class="col">
-      <div class="card card-purple">
-        <h3 class="purple">Static analysis gate</h3>
+    <div>
+      <div class="card purple">
+        <h3 class="p">Static analysis gate</h3>
         <p>Run SAST tools: <code>semgrep</code>, <code>bandit</code>, <code>eslint</code>, <code>SonarQube</code>. Block merges that introduce new high-severity findings.</p>
       </div>
-      <div class="card card-red" style="margin-top:0.4em;">
-        <h3 class="red">Dependency vulnerability gate</h3>
+      <div class="card red" style="margin-top:0.4em;">
+        <h3 class="r">Dependency vulnerability gate</h3>
         <p>Scan for known CVEs in dependencies. <code>npm audit</code>, <code>pip-audit</code>, <code>Snyk</code>, <code>Dependabot</code>. Fail on HIGH or CRITICAL findings.</p>
       </div>
     </div>
   </div>
 
-  <div class="note-block" style="margin-top:0.5em;">
-    <span class="blue">Tip:</span> Start with loose gates and tighten over time. Enforcing 80% coverage on a legacy codebase from day one is demoralising — begin at your current level and ratchet upward.
+  <div class="card blue" style="margin-top:0.5em;">
+    <h3 class="b">Tip</h3>
+    <p>Start with loose gates and tighten over time. Enforcing 80% coverage on a legacy codebase from day one is demoralising — begin at your current level and ratchet upward.</p>
   </div>
-  <div class="slide-num">09 / 20</div>
 </section>
 
 
-<!-- ══════════════════════════════════════════════════════
-     SLIDE 10 — BRANCHING STRATEGIES
-     ══════════════════════════════════════════════════════ -->
-<section>
-  <h2>Branching Strategies &amp; Triggers</h2>
-  <div class="cols">
-    <div class="col">
-      <p class="dim" style="font-size:0.62em;">How you branch determines when and what the pipeline runs.</p>
+<!-- ═══════════════════════════════ SLIDE 10 — BRANCHING STRATEGIES ═══════════════════════════════ -->
+<section data-background-color="#0a0a0f">
+  <div class="slide-hdr">
+    <span class="tag">09</span>
+    <h2>Branching Strategies &amp; Triggers</h2>
+  </div>
+  <div class="cols cols-2">
+    <div>
+      <p style="color:var(--muted); font-size:0.52em;">How you branch determines when and what the pipeline runs.</p>
 
-      <div class="card card-amber">
-        <h3 class="amber">Trunk-based development</h3>
+      <div class="card amber">
+        <h3 class="a">Trunk-based development</h3>
         <p>Developers commit directly to <code>main</code> (or via very short-lived branches). CI runs on every push. Favoured by Google, Meta. Requires feature flags for incomplete work.</p>
       </div>
-      <div class="card card-green" style="margin-top:0.4em;">
-        <h3 class="green">GitHub Flow</h3>
+      <div class="card green" style="margin-top:0.4em;">
+        <h3 class="g">GitHub Flow</h3>
         <p><code>main</code> is always deployable. Work happens in feature branches, merged via pull request. CI runs on each PR and on merge to <code>main</code>. Simple and effective for most teams.</p>
       </div>
-      <div class="card card-purple" style="margin-top:0.4em;">
-        <h3 class="purple">GitFlow</h3>
+      <div class="card purple" style="margin-top:0.4em;">
+        <h3 class="p">GitFlow</h3>
         <p>Separate <code>develop</code>, <code>release</code>, and <code>hotfix</code> branches. More overhead — now considered heavyweight for most modern software.</p>
       </div>
     </div>
-    <div class="col">
+    <div>
       <h3 style="margin-bottom:0.4em;">Common pipeline triggers</h3>
-      <table class="ctable">
+      <table>
         <thead><tr><th>Trigger</th><th>Typical pipeline</th></tr></thead>
         <tbody>
           <tr><td>Push to feature branch</td><td>Build + unit tests</td></tr>
@@ -694,25 +542,25 @@ branch:   76.1%  ✘ (< 75%)  → FAIL</code></pre>
           <tr><td>Scheduled (nightly)</td><td>Slow tests, security scans</td></tr>
         </tbody>
       </table>
-      <div class="note-block" style="margin-top:0.5em;">
-        Don't run the full slow suite on every commit to a feature branch — developers lose patience and disable CI. Run a fast subset; run everything on merge.
+      <div class="card blue" style="margin-top:0.5em;">
+        <p>Don't run the full slow suite on every commit to a feature branch — developers lose patience and disable CI. Run a fast subset; run everything on merge.</p>
       </div>
     </div>
   </div>
-  <div class="slide-num">10 / 20</div>
 </section>
 
 
-<!-- ══════════════════════════════════════════════════════
-     SLIDE 11 — ARTEFACTS AND ENVIRONMENTS
-     ══════════════════════════════════════════════════════ -->
-<section>
-  <h2>Artefacts &amp; Environments</h2>
-  <div class="cols">
-    <div class="col">
-      <p>A <span class="amber">build artefact</span> is the immutable, versioned output of the build stage. It is promoted through environments — never rebuilt.</p>
-      <div class="card card-amber" style="margin-top:0.5em;">
-        <h3 class="amber">Artefact types</h3>
+<!-- ═══════════════════════════════ SLIDE 11 — ARTEFACTS AND ENVIRONMENTS ═══════════════════════════════ -->
+<section data-background-color="#0a0a0f">
+  <div class="slide-hdr">
+    <span class="tag">10</span>
+    <h2>Artefacts &amp; Environments</h2>
+  </div>
+  <div class="cols cols-2">
+    <div>
+      <p>A <span class="a">build artefact</span> is the immutable, versioned output of the build stage. It is promoted through environments — never rebuilt.</p>
+      <div class="card amber" style="margin-top:0.5em;">
+        <h3 class="a">Artefact types</h3>
         <ul>
           <li>Docker image — tagged with git SHA or semver</li>
           <li>Python wheel / npm tarball</li>
@@ -720,46 +568,37 @@ branch:   76.1%  ✘ (< 75%)  → FAIL</code></pre>
           <li>Terraform plan</li>
         </ul>
       </div>
-      <div class="warn-block" style="margin-top:0.5em;">
-        <span class="amber">Build once, deploy many.</span> Never rebuild the artefact for staging vs production. Rebuilding introduces the risk that the artefact that passed testing is not what gets deployed.
+      <div class="card amber" style="margin-top:0.5em;">
+        <h3 class="a">Build once, deploy many.</h3>
+        <p>Never rebuild the artefact for staging vs production. Rebuilding introduces the risk that the artefact that passed testing is not what gets deployed.</p>
       </div>
     </div>
-    <div class="col">
+    <div>
       <h3 style="margin-bottom:0.4em;">Promotion flow</h3>
-      <div class="flow-box amber" style="border-color:var(--amber);">
-        Build → artefact <code>v1.4.2-abc1234</code>
-      </div>
-      <div class="flow-arrow">▼</div>
-      <div class="flow-box green" style="border-color:var(--green);">
-        Deploy to <span class="green">DEV</span> — automated smoke test
-      </div>
-      <div class="flow-arrow">▼</div>
-      <div class="flow-box purple" style="border-color:var(--purple);">
-        Deploy to <span class="purple">STAGING</span> — E2E test suite
-      </div>
-      <div class="flow-arrow">▼</div>
-      <div class="flow-box" style="border-color:var(--text-dim);">
-        <span class="amber">Manual approval</span> (Continuous Delivery)
-      </div>
-      <div class="flow-arrow">▼</div>
-      <div class="flow-box blue" style="border-color:var(--blue);">
-        Deploy to <span class="blue">PRODUCTION</span>
-      </div>
+      <div class="ss-row"><span class="ss-node active">Build → artefact v1.4.2-abc1234</span></div>
+      <div class="ss-row"><span class="ss-arrow">↓</span></div>
+      <div class="ss-row"><span class="ss-node active">Deploy to <span class="g">DEV</span> — automated smoke test</span></div>
+      <div class="ss-row"><span class="ss-arrow">↓</span></div>
+      <div class="ss-row"><span class="ss-node done">Deploy to <span class="p">STAGING</span> — E2E test suite</span></div>
+      <div class="ss-row"><span class="ss-arrow">↓</span></div>
+      <div class="ss-row"><span class="ss-node"><span class="a">Manual approval</span> (Continuous Delivery)</span></div>
+      <div class="ss-row"><span class="ss-arrow">↓</span></div>
+      <div class="ss-row"><span class="ss-node done">Deploy to <span class="b">PRODUCTION</span></span></div>
     </div>
   </div>
-  <div class="slide-num">11 / 20</div>
 </section>
 
 
-<!-- ══════════════════════════════════════════════════════
-     SLIDE 12 — DOCKER IN CI/CD
-     ══════════════════════════════════════════════════════ -->
-<section>
-  <h2>Docker in CI/CD</h2>
-  <p>Containers solve the <span class="amber">"works on my machine"</span> problem. A Docker image bundles the application and its entire runtime — the same image runs in CI, staging, and production.</p>
+<!-- ═══════════════════════════════ SLIDE 12 — DOCKER IN CI/CD ═══════════════════════════════ -->
+<section data-background-color="#0a0a0f">
+  <div class="slide-hdr">
+    <span class="tag">11</span>
+    <h2>Docker in CI/CD</h2>
+  </div>
+  <p>Containers solve the <span class="a">"works on my machine"</span> problem. A Docker image bundles the application and its entire runtime — the same image runs in CI, staging, and production.</p>
 
-  <div class="cols" style="margin-top:0.5em;">
-    <div class="col-55" style="flex:0 0 55%;">
+  <div class="cols cols-6040" style="margin-top:0.5em;">
+    <div>
       <pre><code># Multi-stage Dockerfile (Python example)
 FROM python:3.12-slim AS builder
 WORKDIR /app
@@ -774,13 +613,13 @@ COPY src/ .
 RUN useradd -m appuser && chown -R appuser /app
 USER appuser
 CMD ["python", "main.py"]</code></pre>
-      <div class="note-block" style="margin-top:0.4em; font-size:0.55em;">
-        Multi-stage builds keep the final image lean — the builder stage (with compilers and dev tools) is discarded. Runtime images should contain only what is needed to run.
+      <div class="card blue" style="margin-top:0.4em;">
+        <p>Multi-stage builds keep the final image lean — the builder stage (with compilers and dev tools) is discarded. Runtime images should contain only what is needed to run.</p>
       </div>
     </div>
-    <div class="col">
-      <div class="card card-green">
-        <h3 class="green">CI pipeline with Docker</h3>
+    <div>
+      <div class="card green">
+        <h3 class="g">CI pipeline with Docker</h3>
         <ul>
           <li>Build image: <code>docker build -t app:$SHA .</code></li>
           <li>Run tests inside the container</li>
@@ -789,8 +628,8 @@ CMD ["python", "main.py"]</code></pre>
           <li>Deploy: pull image by immutable SHA tag</li>
         </ul>
       </div>
-      <div class="card card-amber" style="margin-top:0.4em;">
-        <h3 class="amber">Image tagging strategy</h3>
+      <div class="card amber" style="margin-top:0.4em;">
+        <h3 class="a">Image tagging strategy</h3>
         <ul>
           <li><code>:latest</code> — avoid in production; ambiguous</li>
           <li><code>:abc1234</code> — git SHA, fully traceable</li>
@@ -800,17 +639,17 @@ CMD ["python", "main.py"]</code></pre>
       </div>
     </div>
   </div>
-  <div class="slide-num">12 / 20</div>
 </section>
 
 
-<!-- ══════════════════════════════════════════════════════
-     SLIDE 13 — GITHUB ACTIONS
-     ══════════════════════════════════════════════════════ -->
-<section>
-  <h2>Tool Deep Dive: GitHub Actions</h2>
-  <div class="cols">
-    <div class="col-55" style="flex:0 0 56%;">
+<!-- ═══════════════════════════════ SLIDE 13 — GITHUB ACTIONS ═══════════════════════════════ -->
+<section data-background-color="#0a0a0f">
+  <div class="slide-hdr">
+    <span class="tag">12</span>
+    <h2>Tool Deep Dive: GitHub Actions</h2>
+  </div>
+  <div class="cols cols-6040">
+    <div>
       <pre><code># .github/workflows/ci.yml
 name: CI
 
@@ -849,33 +688,33 @@ jobs:
         run: docker push \
           ghcr.io/${{ github.repository }}:${{ github.sha }}</code></pre>
     </div>
-    <div class="col">
-      <div class="card card-amber">
-        <h3 class="amber">Key concepts</h3>
+    <div>
+      <div class="card amber">
+        <h3 class="a">Key concepts</h3>
         <ul>
-          <li><span class="amber">Workflow</span> — a YAML file in <code>.github/workflows/</code></li>
-          <li><span class="amber">Job</span> — a set of steps on a single runner</li>
-          <li><span class="amber">Step</span> — a shell command or a reusable Action</li>
-          <li><span class="amber">Runner</span> — the VM executing the job</li>
-          <li><span class="amber">Action</span> — packaged, reusable step from the Marketplace</li>
+          <li><span class="a">Workflow</span> — a YAML file in <code>.github/workflows/</code></li>
+          <li><span class="a">Job</span> — a set of steps on a single runner</li>
+          <li><span class="a">Step</span> — a shell command or a reusable Action</li>
+          <li><span class="a">Runner</span> — the VM executing the job</li>
+          <li><span class="a">Action</span> — packaged, reusable step from the Marketplace</li>
         </ul>
       </div>
-      <div class="card card-green" style="margin-top:0.5em;">
-        <h3 class="green">Parallel jobs</h3>
+      <div class="card green" style="margin-top:0.5em;">
+        <h3 class="g">Parallel jobs</h3>
         <p>Split slow test suites across multiple jobs that run concurrently. Use <code>needs:</code> to express dependencies between jobs.</p>
       </div>
     </div>
   </div>
-  <div class="slide-num">13 / 20</div>
 </section>
 
 
-<!-- ══════════════════════════════════════════════════════
-     SLIDE 14 — GITLAB CI & JENKINS (COMPARE)
-     ══════════════════════════════════════════════════════ -->
-<section>
-  <h2>CI/CD Tool Landscape</h2>
-  <table class="ctable">
+<!-- ═══════════════════════════════ SLIDE 14 — GITLAB CI & JENKINS ═══════════════════════════════ -->
+<section data-background-color="#0a0a0f">
+  <div class="slide-hdr">
+    <span class="tag">13</span>
+    <h2>CI/CD Tool Landscape</h2>
+  </div>
+  <table>
     <thead>
       <tr>
         <th>Tool</th>
@@ -887,35 +726,35 @@ jobs:
     </thead>
     <tbody>
       <tr>
-        <td><span class="amber">GitHub Actions</span></td>
+        <td><span class="a">GitHub Actions</span></td>
         <td>SaaS / self-hosted</td>
         <td><code>.github/workflows/*.yml</code></td>
         <td>Tight GitHub integration, huge Marketplace, free for public repos</td>
         <td>Costs scale with minutes on private repos</td>
       </tr>
       <tr>
-        <td><span class="purple">GitLab CI/CD</span></td>
+        <td><span class="p">GitLab CI/CD</span></td>
         <td>SaaS / self-hosted</td>
         <td><code>.gitlab-ci.yml</code></td>
         <td>All-in-one DevOps platform, strong environments &amp; review apps</td>
         <td>GitLab hosting required (or self-host)</td>
       </tr>
       <tr>
-        <td><span class="blue">Jenkins</span></td>
+        <td><span class="b">Jenkins</span></td>
         <td>Self-hosted</td>
         <td><code>Jenkinsfile</code> (Groovy)</td>
         <td>Fully configurable, huge plugin ecosystem, runs anywhere</td>
         <td>High operational burden; Groovy DSL has a learning curve</td>
       </tr>
       <tr>
-        <td><span class="green">CircleCI</span></td>
+        <td><span class="g">CircleCI</span></td>
         <td>SaaS / self-hosted</td>
         <td><code>.circleci/config.yml</code></td>
         <td>Fast, good caching, orbs for reusable config</td>
         <td>Costs can surprise at scale</td>
       </tr>
       <tr>
-        <td><span class="text-dim">Tekton / ArgoCD</span></td>
+        <td><span style="color:var(--muted)">Tekton / ArgoCD</span></td>
         <td>Kubernetes-native</td>
         <td>CRD YAML manifests</td>
         <td>Cloud-native, GitOps-friendly, very scalable</td>
@@ -923,24 +762,24 @@ jobs:
       </tr>
     </tbody>
   </table>
-  <div class="note-block" style="margin-top:0.5em;">
-    For a new project on GitHub, start with <span class="amber">GitHub Actions</span>. For an enterprise self-hosted requirement with Kubernetes, evaluate <span class="blue">Tekton + ArgoCD</span>.
+  <div class="card blue" style="margin-top:0.5em;">
+    <p>For a new project on GitHub, start with <span class="a">GitHub Actions</span>. For an enterprise self-hosted requirement with Kubernetes, evaluate <span class="b">Tekton + ArgoCD</span>.</p>
   </div>
-  <div class="slide-num">14 / 20</div>
 </section>
 
 
-<!-- ══════════════════════════════════════════════════════
-     SLIDE 15 — SECRETS AND SECURITY
-     ══════════════════════════════════════════════════════ -->
-<section>
-  <h2>Secrets &amp; Pipeline Security</h2>
-  <div class="cols">
-    <div class="col">
+<!-- ═══════════════════════════════ SLIDE 15 — SECRETS AND SECURITY ═══════════════════════════════ -->
+<section data-background-color="#0a0a0f">
+  <div class="slide-hdr">
+    <span class="tag">14</span>
+    <h2>Secrets &amp; Pipeline Security</h2>
+  </div>
+  <div class="cols cols-2">
+    <div>
       <p>Pipelines need credentials — API keys, registry passwords, cloud credentials. Mishandling them is one of the most common CI/CD security failures.</p>
 
-      <div class="card card-red">
-        <h3 class="red">Never do this</h3>
+      <div class="card red">
+        <h3 class="r">Never do this</h3>
         <ul>
           <li>Hardcode secrets in the YAML config</li>
           <li>Print secrets with <code>echo $MY_SECRET</code></li>
@@ -949,8 +788,8 @@ jobs:
         </ul>
       </div>
 
-      <div class="card card-green" style="margin-top:0.5em;">
-        <h3 class="green">Correct approach</h3>
+      <div class="card green" style="margin-top:0.5em;">
+        <h3 class="g">Correct approach</h3>
         <ul>
           <li>Store secrets in the platform vault (GitHub Secrets, GitLab Variables, AWS SSM)</li>
           <li>Reference via <code>${{ secrets.MY_KEY }}</code> — redacted from logs</li>
@@ -959,145 +798,140 @@ jobs:
         </ul>
       </div>
     </div>
-    <div class="col">
-      <div class="card card-amber">
-        <h3 class="amber">Supply chain security</h3>
+    <div>
+      <div class="card amber">
+        <h3 class="a">Supply chain security</h3>
         <ul>
           <li>Pin third-party Actions to a full commit SHA, not a tag</li>
           <li>Use <code>SLSA</code> provenance and signed artefacts</li>
           <li>Scan dependencies on every build</li>
         </ul>
       </div>
-      <div class="card card-purple" style="margin-top:0.4em;">
-        <h3 class="purple">Least privilege runners</h3>
+      <div class="card purple" style="margin-top:0.4em;">
+        <h3 class="p">Least privilege runners</h3>
         <p>Runners should have the minimum IAM permissions needed. Use ephemeral runners (a fresh VM per job) rather than long-lived shared agents.</p>
       </div>
-      <div class="note-block" style="margin-top:0.4em;">
-        <span class="blue">OIDC:</span> GitHub Actions supports OIDC federation with AWS, GCP, and Azure. The runner gets a short-lived token automatically — no stored secret needed.
+      <div class="card blue" style="margin-top:0.4em;">
+        <h3 class="b">OIDC</h3>
+        <p>GitHub Actions supports OIDC federation with AWS, GCP, and Azure. The runner gets a short-lived token automatically — no stored secret needed.</p>
       </div>
     </div>
   </div>
-  <div class="slide-num">15 / 20</div>
 </section>
 
 
-<!-- ══════════════════════════════════════════════════════
-     SLIDE 16 — DEPLOYMENT STRATEGIES
-     ══════════════════════════════════════════════════════ -->
-<section>
-  <h2>Deployment Strategies</h2>
+<!-- ═══════════════════════════════ SLIDE 16 — DEPLOYMENT STRATEGIES ═══════════════════════════════ -->
+<section data-background-color="#0a0a0f">
+  <div class="slide-hdr">
+    <span class="tag">15</span>
+    <h2>Deployment Strategies</h2>
+  </div>
   <p>How you deploy to production determines your blast radius and rollback speed.</p>
 
-  <div class="cols" style="margin-top:0.5em;">
-    <div class="col">
-      <div class="card card-red">
-        <h3 class="red">Big-bang / recreate</h3>
+  <div class="cols cols-2" style="margin-top:0.5em;">
+    <div>
+      <div class="card red">
+        <h3 class="r">Big-bang / recreate</h3>
         <p>Stop old version, start new version. Simple but causes downtime. Only for non-critical systems.</p>
       </div>
-      <div class="card card-amber" style="margin-top:0.4em;">
-        <h3 class="amber">Rolling update</h3>
+      <div class="card amber" style="margin-top:0.4em;">
+        <h3 class="a">Rolling update</h3>
         <p>Replace instances one at a time. Zero downtime. Old and new versions briefly coexist — APIs must be backwards-compatible.</p>
       </div>
-      <div class="card card-green" style="margin-top:0.4em;">
-        <h3 class="green">Blue/Green</h3>
+      <div class="card green" style="margin-top:0.4em;">
+        <h3 class="g">Blue/Green</h3>
         <p>Two identical environments. Route traffic from blue (old) to green (new). Instant rollback by switching the load balancer back. Doubles infrastructure cost briefly.</p>
       </div>
     </div>
-    <div class="col">
-      <div class="card card-purple">
-        <h3 class="purple">Canary release</h3>
+    <div>
+      <div class="card purple">
+        <h3 class="p">Canary release</h3>
         <p>Route a small percentage (e.g. 5%) of traffic to the new version. Monitor error rates and latency. Gradually shift 100% if healthy, or roll back quickly if not.</p>
       </div>
-      <div class="card card-blue" style="margin-top:0.4em;">
-        <h3 class="blue">Feature flags</h3>
+      <div class="card blue" style="margin-top:0.4em;">
+        <h3 class="b">Feature flags</h3>
         <p>Deploy code but hide it behind a runtime flag. Decouple deployment from feature release. Allows trunk-based development with incomplete features safely in production.</p>
       </div>
-      <div class="note-block" style="margin-top:0.4em;">
-        Canary + feature flags is the combination used by most high-velocity teams (Netflix, Spotify, GitHub itself).
+      <div class="card amber" style="margin-top:0.4em;">
+        <p>Canary + feature flags is the combination used by most high-velocity teams (Netflix, Spotify, GitHub itself).</p>
       </div>
     </div>
   </div>
-  <div class="slide-num">16 / 20</div>
 </section>
 
 
-<!-- ══════════════════════════════════════════════════════
-     SLIDE 17 — OBSERVABILITY & ROLLBACKS
-     ══════════════════════════════════════════════════════ -->
-<section>
-  <h2>Observability &amp; Rollback</h2>
-  <p>Deploying fast is only safe if you can <span class="amber">detect failures quickly</span> and <span class="green">recover faster than you broke things</span>.</p>
+<!-- ═══════════════════════════════ SLIDE 17 — OBSERVABILITY & ROLLBACKS ═══════════════════════════════ -->
+<section data-background-color="#0a0a0f">
+  <div class="slide-hdr">
+    <span class="tag">16</span>
+    <h2>Observability &amp; Rollback</h2>
+  </div>
+  <p>Deploying fast is only safe if you can <span class="a">detect failures quickly</span> and <span class="g">recover faster than you broke things</span>.</p>
 
-  <div class="cols" style="margin-top:0.5em;">
-    <div class="col">
-      <div class="card card-amber">
-        <h3 class="amber">The three pillars</h3>
+  <div class="cols cols-2" style="margin-top:0.5em;">
+    <div>
+      <div class="card amber">
+        <h3 class="a">The three pillars</h3>
         <ul>
-          <li><span class="amber">Metrics</span> — latency, error rate, saturation (Prometheus / Grafana / Datadog)</li>
-          <li><span class="green">Logs</span> — structured JSON logs shipped to Loki / ELK / Splunk</li>
-          <li><span class="purple">Traces</span> — distributed tracing across services (OpenTelemetry, Jaeger, Tempo)</li>
+          <li><span class="a">Metrics</span> — latency, error rate, saturation (Prometheus / Grafana / Datadog)</li>
+          <li><span class="g">Logs</span> — structured JSON logs shipped to Loki / ELK / Splunk</li>
+          <li><span class="p">Traces</span> — distributed tracing across services (OpenTelemetry, Jaeger, Tempo)</li>
         </ul>
       </div>
-      <div class="card card-green" style="margin-top:0.4em;">
-        <h3 class="green">Automated rollback</h3>
+      <div class="card green" style="margin-top:0.4em;">
+        <h3 class="g">Automated rollback</h3>
         <p>Configure alerts on key SLIs. If error rate exceeds threshold within a defined window after deploy, trigger automatic rollback — re-deploy the previous artefact SHA.</p>
       </div>
     </div>
-    <div class="col">
+    <div>
       <h3 style="margin-bottom:0.4em;">Post-deploy checklist</h3>
-      <div class="timeline">
-        <div class="tl-item">
-          <div class="tl-dot amber"></div>
-          <strong>T+0m</strong>
-          <p>Deploy completes. Automated smoke tests run.</p>
-        </div>
-        <div class="tl-item">
-          <div class="tl-dot green"></div>
-          <strong>T+5m</strong>
-          <p>Monitor p50/p99 latency and error rate. Compare to pre-deploy baseline.</p>
-        </div>
-        <div class="tl-item">
-          <div class="tl-dot purple"></div>
-          <strong>T+15m</strong>
-          <p>Check application logs for new error patterns.</p>
-        </div>
-        <div class="tl-item">
-          <div class="tl-dot blue"></div>
-          <strong>T+30m</strong>
-          <p>Mark deploy as stable. Close the change window.</p>
-        </div>
+      <div class="card amber" style="margin-bottom:0.3em;">
+        <h3 class="a">T+0m</h3>
+        <p>Deploy completes. Automated smoke tests run.</p>
+      </div>
+      <div class="card green" style="margin-bottom:0.3em;">
+        <h3 class="g">T+5m</h3>
+        <p>Monitor p50/p99 latency and error rate. Compare to pre-deploy baseline.</p>
+      </div>
+      <div class="card purple" style="margin-bottom:0.3em;">
+        <h3 class="p">T+15m</h3>
+        <p>Check application logs for new error patterns.</p>
+      </div>
+      <div class="card blue">
+        <h3 class="b">T+30m</h3>
+        <p>Mark deploy as stable. Close the change window.</p>
       </div>
     </div>
   </div>
-  <div class="slide-num">17 / 20</div>
 </section>
 
 
-<!-- ══════════════════════════════════════════════════════
-     SLIDE 18 — PIPELINE OPTIMISATION
-     ══════════════════════════════════════════════════════ -->
-<section>
-  <h2>Keeping Pipelines Fast</h2>
-  <p>A slow pipeline is a pipeline that developers <span class="red">work around</span>. Target <span class="amber">&lt; 10 minutes</span> for the core CI loop.</p>
+<!-- ═══════════════════════════════ SLIDE 18 — PIPELINE OPTIMISATION ═══════════════════════════════ -->
+<section data-background-color="#0a0a0f">
+  <div class="slide-hdr">
+    <span class="tag">17</span>
+    <h2>Keeping Pipelines Fast</h2>
+  </div>
+  <p>A slow pipeline is a pipeline that developers <span class="r">work around</span>. Target <span class="a">&lt; 10 minutes</span> for the core CI loop.</p>
 
-  <div class="cols" style="margin-top:0.5em;">
-    <div class="col">
-      <div class="card card-green">
-        <h3 class="green">Caching</h3>
+  <div class="cols cols-2" style="margin-top:0.5em;">
+    <div>
+      <div class="card green">
+        <h3 class="g">Caching</h3>
         <p>Cache dependency downloads between runs. Most platforms support keying the cache on the lockfile hash.</p>
         <pre style="margin-top:0.3em;"><code>- uses: actions/cache@v4
   with:
     path: ~/.npm
     key: npm-${{ hashFiles('**/package-lock.json') }}</code></pre>
       </div>
-      <div class="card card-amber" style="margin-top:0.4em;">
-        <h3 class="amber">Parallelism</h3>
+      <div class="card amber" style="margin-top:0.4em;">
+        <h3 class="a">Parallelism</h3>
         <p>Split test suites into shards. Run lint, unit tests, and security scans as parallel jobs. Use a matrix strategy for multi-version or multi-OS testing.</p>
       </div>
     </div>
-    <div class="col">
-      <div class="card card-purple">
-        <h3 class="purple">Path filtering</h3>
+    <div>
+      <div class="card purple">
+        <h3 class="p">Path filtering</h3>
         <p>Only trigger expensive jobs when relevant files change. Skip the full test suite if only documentation changed.</p>
         <pre style="margin-top:0.3em;"><code>on:
   push:
@@ -1106,61 +940,61 @@ jobs:
       - 'tests/**'
       - 'requirements*.txt'</code></pre>
       </div>
-      <div class="card card-blue" style="margin-top:0.4em;">
-        <h3 class="blue">Layer caching for Docker</h3>
+      <div class="card blue" style="margin-top:0.4em;">
+        <h3 class="b">Layer caching for Docker</h3>
         <p>Order Dockerfile instructions from <em>least</em> to <em>most</em> frequently changing. Copy and install dependencies before copying application code.</p>
       </div>
     </div>
   </div>
-  <div class="slide-num">18 / 20</div>
 </section>
 
 
-<!-- ══════════════════════════════════════════════════════
-     SLIDE 19 — METRICS: DORA
-     ══════════════════════════════════════════════════════ -->
-<section>
-  <h2>Measuring CI/CD Effectiveness: DORA Metrics</h2>
-  <p>The <span class="amber">DORA</span> (DevOps Research and Assessment) team identified four metrics that predict software delivery performance.</p>
+<!-- ═══════════════════════════════ SLIDE 19 — METRICS: DORA ═══════════════════════════════ -->
+<section data-background-color="#0a0a0f">
+  <div class="slide-hdr">
+    <span class="tag">18</span>
+    <h2>Measuring CI/CD Effectiveness: DORA Metrics</h2>
+  </div>
+  <p>The <span class="a">DORA</span> (DevOps Research and Assessment) team identified four metrics that predict software delivery performance.</p>
 
-  <div class="cols" style="margin-top:0.6em;">
-    <div class="col">
-      <div class="card card-amber">
-        <h3 class="amber">Deployment Frequency</h3>
+  <div class="cols cols-2" style="margin-top:0.6em;">
+    <div>
+      <div class="card amber">
+        <h3 class="a">Deployment Frequency</h3>
         <p>How often does the team successfully deploy to production? Elite teams deploy multiple times per day. Frequent, small deployments are safer than infrequent large ones.</p>
       </div>
-      <div class="card card-green" style="margin-top:0.4em;">
-        <h3 class="green">Lead Time for Changes</h3>
+      <div class="card green" style="margin-top:0.4em;">
+        <h3 class="g">Lead Time for Changes</h3>
         <p>Time from code committed to code running in production. Elite: &lt; 1 hour. Measures the efficiency of the entire pipeline, including review and approvals.</p>
       </div>
     </div>
-    <div class="col">
-      <div class="card card-purple">
-        <h3 class="purple">Change Failure Rate</h3>
+    <div>
+      <div class="card purple">
+        <h3 class="p">Change Failure Rate</h3>
         <p>Percentage of deployments that cause a production failure requiring rollback or hotfix. Elite: 0–5%. A high rate indicates inadequate testing or deployment strategy.</p>
       </div>
-      <div class="card card-blue" style="margin-top:0.4em;">
-        <h3 class="blue">Failed Deployment Recovery Time</h3>
+      <div class="card blue" style="margin-top:0.4em;">
+        <h3 class="b">Failed Deployment Recovery Time</h3>
         <p>How long to restore service after a failure. Elite: &lt; 1 hour. Requires fast detection (observability), fast rollback, and on-call processes.</p>
       </div>
     </div>
   </div>
-  <div class="note-block" style="margin-top:0.4em;">
-    These metrics are positively correlated with business outcomes — teams in the elite tier have 127× faster lead time than low performers (DORA State of DevOps Report).
+  <div class="card blue" style="margin-top:0.4em;">
+    <p>These metrics are positively correlated with business outcomes — teams in the elite tier have 127× faster lead time than low performers (DORA State of DevOps Report).</p>
   </div>
-  <div class="slide-num">19 / 20</div>
 </section>
 
 
-<!-- ══════════════════════════════════════════════════════
-     SLIDE 20 — SUMMARY
-     ══════════════════════════════════════════════════════ -->
-<section>
-  <h2>Summary &amp; Next Steps</h2>
-  <div class="cols">
-    <div class="col">
-      <div class="card card-amber">
-        <h3 class="amber">What we covered</h3>
+<!-- ═══════════════════════════════ SLIDE 20 — SUMMARY ═══════════════════════════════ -->
+<section data-background-color="#0a0a0f">
+  <div class="slide-hdr">
+    <span class="tag">19</span>
+    <h2>Summary &amp; Next Steps</h2>
+  </div>
+  <div class="cols cols-2">
+    <div>
+      <div class="card amber">
+        <h3 class="a">What we covered</h3>
         <ul>
           <li>Why CI/CD exists — eliminating integration risk and manual toil</li>
           <li>CI: automated build and test on every commit</li>
@@ -1173,9 +1007,9 @@ jobs:
         </ul>
       </div>
     </div>
-    <div class="col">
-      <div class="card card-green">
-        <h3 class="green">Recommended next steps</h3>
+    <div>
+      <div class="card green">
+        <h3 class="g">Recommended next steps</h3>
         <ol style="padding-left:1.2em;">
           <li>Add a <code>.github/workflows/ci.yml</code> to your next project</li>
           <li>Set up unit tests with a coverage gate</li>
@@ -1185,12 +1019,12 @@ jobs:
           <li>Measure your DORA metrics — establish a baseline</li>
         </ol>
       </div>
-      <div class="note-block" style="margin-top:0.5em;">
-        <span class="blue">Further reading:</span> Humble &amp; Farley, <em>Continuous Delivery</em> (2010) · Kim et al., <em>The DevOps Handbook</em> (2nd ed. 2021) · DORA State of DevOps Reports · Martin Fowler's <em>ContinuousIntegration</em> article (martinfowler.com)
+      <div class="card blue" style="margin-top:0.5em;">
+        <h3 class="b">Further reading</h3>
+        <p>Humble &amp; Farley, <em>Continuous Delivery</em> (2010) · Kim et al., <em>The DevOps Handbook</em> (2nd ed. 2021) · DORA State of DevOps Reports · Martin Fowler's <em>ContinuousIntegration</em> article (martinfowler.com)</p>
       </div>
     </div>
   </div>
-  <div class="slide-num">20 / 20</div>
 </section>
 
 
@@ -1199,20 +1033,21 @@ jobs:
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/plugin/highlight/highlight.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/plugin/notes/notes.min.js"></script>
 <script>
-  Reveal.initialize({
-    hash: true,
-    slideNumber: false,
-    transition: 'slide',
-    transitionSpeed: 'fast',
-    backgroundTransition: 'fade',
-    center: false,
-    width: 1280,
-    height: 900,
-    margin: 0.02,
-    plugins: [ RevealHighlight, RevealNotes ]
-  });
+Reveal.initialize({
+  hash: true,
+  slideNumber: 'c/t',
+  transition: 'fade',
+  transitionSpeed: 'fast',
+  controls: true,
+  progress: true,
+  center: false,
+  width: 1100,
+  height: 900,
+  margin: 0.01,
+  plugins: [RevealHighlight],
+  highlight: { theme: 'monokai' }
+});
 </script>
 <script>
 (function(){
