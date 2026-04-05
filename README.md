@@ -4,6 +4,8 @@ An interactive Reveal.js presentation covering Continuous Integration and Contin
 
 ## ▶ [Open the Presentation](https://brendanjameslynskey.github.io/Introduction_to_CI_CD/)
 
+## 📄 [Markdown Version](presentation.md)
+
 ---
 
 ## Contents
