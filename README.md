@@ -50,6 +50,12 @@ An interactive Reveal.js presentation covering Continuous Integration and Contin
 
 Single self-contained `index.html` — no build step, no npm, no dependencies to install.
 
+## See also
+
+- [Cloud_aaS_03_PaaS_FaaS_CaaS](https://github.com/BrendanJamesLynskey/Cloud_aaS_03_PaaS_FaaS_CaaS) — what these pipelines deploy to (managed compute layers).
+- [Cloud_aaS_05_Cloud_Security](https://github.com/BrendanJamesLynskey/Cloud_aaS_05_Cloud_Security) — securing the pipeline itself (OIDC federation, signed builds, SBOM, SLSA, Sigstore).
+- Series hub: [Cloud `*aaS`](https://github.com/BrendanJamesLynskey/Cloud_aaS_Hub).
+
 ## References
 
 Martin Fowler, *Continuous Integration* — martinfowler.com · Humble & Farley, *Continuous Delivery*, Addison-Wesley, 2010 · Kim, Humble, Debois & Willis, *The DevOps Handbook*, 2nd ed., 2021 · DORA, *State of DevOps Report* (annual) · Google, *DORA Metrics* — cloud.google.com/devops
