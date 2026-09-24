@@ -8,20 +8,20 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/theme/black.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/theme/white.min.css">
 <style>
   :root {
-    --amber:  #f5a623;
-    --green:  #4ecb8d;
-    --purple: #a78bfa;
-    --blue:   #60a5fa;
-    --red:    #f87171;
-    --bg:     #0a0a0f;
-    --bg2:    #10101a;
-    --bg3:    #181824;
-    --border: #2a2a3a;
-    --text:   #e8e8f0;
-    --muted:  #8888a8;
+    --amber:  #af7e0f;
+    --green:  #217566;
+    --purple: #4e4392;
+    --blue:   #204d89;
+    --red:    #bb2233;
+    --bg:     #eaeff2;
+    --bg2:    #e1e8ec;
+    --bg3:    #d9e1e6;
+    --border: #b9c7d0;
+    --text:   #14273b;
+    --muted:  #5c6e7b;
   }
 
   .reveal-viewport { background: var(--bg); }
@@ -37,7 +37,7 @@
   .reveal code { font-family: 'JetBrains Mono', monospace; font-size: .72em; }
   .reveal pre  { box-shadow: none; background: var(--bg3); border: 1px solid var(--border);
                  border-radius: 6px; padding: .3em .5em; margin: .25em 0; }
-  .reveal pre code { font-size: .52em; line-height: 1.35; background: transparent; color: #cdd6f4; }
+  .reveal pre code { font-size: .52em; line-height: 1.35; background: transparent; color: #213343; }
 
   /* ── slide chrome ── */
   .slide-hdr {
@@ -72,16 +72,16 @@
   .card.blue  { border-left: 3px solid var(--blue); }
   .card.red   { border-left: 3px solid var(--red); }
   .card h3 { font-size: .64em; margin: 0 0 .12em; }
-  .card p  { font-size: .52em; margin: 0; color: #b8b8d0; }
+  .card p  { font-size: .52em; margin: 0; color: #354552; }
   .card ul { margin: 0; padding-left: 1em; }
-  .card li { font-size: .52em; color: #b8b8d0; margin-bottom: .02em; }
+  .card li { font-size: .52em; color: #354552; margin-bottom: .02em; }
 
   /* ── table ── */
   .reveal table { width: 100%; border-collapse: collapse; font-size: .5em; }
   .reveal table th { background: var(--bg3); color: var(--amber); font-weight: 600;
                      padding: .2em .4em; border: 1px solid var(--border); text-align: left; }
-  .reveal table td { padding: .18em .4em; border: 1px solid var(--border); color: #ccc; }
-  .reveal table tr:nth-child(even) td { background: #0e0e18; }
+  .reveal table td { padding: .18em .4em; border: 1px solid var(--border); color: #283948; }
+  .reveal table tr:nth-child(even) td { background: #e3eaee; }
 
   /* ── accent spans ── */
   .a  { color: var(--amber); font-weight: 600; }
@@ -124,8 +124,8 @@
     padding: .2em .55em; border-radius: 5px; font-size: .9em;
     background: var(--bg3); border: 1px solid var(--border); color: var(--text);
   }
-  .ss-node.active { background: #1a2a1a; border-color: var(--green); color: var(--green); }
-  .ss-node.done   { background: #1a1a2a; border-color: var(--purple); color: var(--purple); }
+  .ss-node.active { background: #c4d4d1; border-color: var(--green); color: var(--green); }
+  .ss-node.done   { background: #d4dde4; border-color: var(--purple); color: var(--purple); }
   .ss-arrow { color: var(--amber); }
   .ss-label { font-size: .8em; color: var(--muted); margin-left: .3em; }
 
@@ -133,6 +133,7 @@
   .reveal ul, .reveal ol { margin: .15em 0 .15em 1em; }
 .reveal .slides > section { display: flex !important; flex-direction: column !important; overflow-y: auto !important; align-items: stretch !important; justify-content: flex-start !important; }
 </style>
+<style>.reveal .slide-number{background-color:transparent}</style>
 </head>
 <body>
 <div class="reveal">
@@ -140,7 +141,7 @@
 
 
 <!-- ═══════════════════════════════ SLIDE 01 — TITLE ═══════════════════════════════ -->
-<section class="title-slide" data-background-color="#0a0a0f">
+<section class="title-slide" data-background-color="#eaeff2">
   <div style="text-align:left; max-width:820px; margin:0 auto; padding: 1em 0;">
     <div style="font-family:'JetBrains Mono',monospace; font-size:.5em; color:var(--muted); margin-bottom:.4em; letter-spacing:.1em;">
       TECHNICAL PRESENTATION
@@ -166,7 +167,7 @@
       <span class="ss-arrow">→</span>
       <span class="ss-node done">🚀 Deploy</span>
     </div>
-    <p style="max-width:620px; color:#a0a0c0; font-size:.56em; line-height:1.5; margin-top:1em;">
+    <p style="max-width:620px; color:#475865; font-size:.56em; line-height:1.5; margin-top:1em;">
       Automating the path from a developer's editor to production systems
     </p>
     <div class="meta" style="margin-top:1.4em;">
@@ -177,7 +178,7 @@
 
 
 <!-- ═══════════════════════════════ SLIDE 02 — AGENDA ═══════════════════════════════ -->
-<section data-background-color="#0a0a0f">
+<section data-background-color="#eaeff2">
   <div class="slide-hdr">
     <span class="tag">01</span>
     <h2>Topics</h2>
@@ -226,7 +227,7 @@
 
 
 <!-- ═══════════════════════════════ SLIDE 03 — THE PROBLEM ═══════════════════════════════ -->
-<section data-background-color="#0a0a0f">
+<section data-background-color="#eaeff2">
   <div class="slide-hdr">
     <span class="tag">02</span>
     <h2>The Problem: Manual Release Hell</h2>
@@ -265,7 +266,7 @@
 
 
 <!-- ═══════════════════════════════ SLIDE 04 — CONTINUOUS INTEGRATION ═══════════════════════════════ -->
-<section data-background-color="#0a0a0f">
+<section data-background-color="#eaeff2">
   <div class="slide-hdr">
     <span class="tag">03</span>
     <h2>Continuous Integration (CI)</h2>
@@ -302,7 +303,7 @@
 
 
 <!-- ═══════════════════════════════ SLIDE 05 — CD: DELIVERY vs DEPLOYMENT ═══════════════════════════════ -->
-<section data-background-color="#0a0a0f">
+<section data-background-color="#eaeff2">
   <div class="slide-hdr">
     <span class="tag">04</span>
     <h2>Continuous Delivery vs Continuous Deployment</h2>
@@ -348,7 +349,7 @@
 
 
 <!-- ═══════════════════════════════ SLIDE 06 — THE PIPELINE ═══════════════════════════════ -->
-<section data-background-color="#0a0a0f">
+<section data-background-color="#eaeff2">
   <div class="slide-hdr">
     <span class="tag">05</span>
     <h2>The CI/CD Pipeline</h2>
@@ -393,7 +394,7 @@
 
 
 <!-- ═══════════════════════════════ SLIDE 07 — BUILD STAGE ═══════════════════════════════ -->
-<section data-background-color="#0a0a0f">
+<section data-background-color="#eaeff2">
   <div class="slide-hdr">
     <span class="tag">06</span>
     <h2>Stage: Build</h2>
@@ -437,7 +438,7 @@
 
 
 <!-- ═══════════════════════════════ SLIDE 08 — TEST PYRAMID ═══════════════════════════════ -->
-<section data-background-color="#0a0a0f">
+<section data-background-color="#eaeff2">
   <div class="slide-hdr">
     <span class="tag">07</span>
     <h2>The Test Pyramid</h2>
@@ -448,9 +449,9 @@
 
       <!-- ASCII pyramid rendered with divs -->
       <div style="text-align:center; margin: 0.6em 0; font-family:'JetBrains Mono',monospace; font-size:0.48em; line-height:1.5;">
-        <div style="color:var(--red);    margin:0 auto; width:60%;  background:#1a0505; border:1px solid var(--red);    padding:0.4em; border-radius:4px;">E2E / UI Tests<br><span style="color:var(--muted); font-size:0.85em;">few · slow · brittle · high confidence</span></div>
-        <div style="color:var(--purple); margin:0.2em auto; width:78%; background:#140820; border:1px solid var(--purple); padding:0.4em; border-radius:4px;">Integration Tests<br><span style="color:var(--muted); font-size:0.85em;">some · moderate speed · test interactions</span></div>
-        <div style="color:var(--green);  margin:0.2em auto; width:96%; background:#071810; border:1px solid var(--green);  padding:0.4em; border-radius:4px;">Unit Tests<br><span style="color:var(--muted); font-size:0.85em;">many · fast · isolated · milliseconds each</span></div>
+        <div style="color:var(--red);    margin:0 auto; width:60%;  background:#fce6e6; border:1px solid var(--red);    padding:0.4em; border-radius:4px;">E2E / UI Tests<br><span style="color:var(--muted); font-size:0.85em;">few · slow · brittle · high confidence</span></div>
+        <div style="color:var(--purple); margin:0.2em auto; width:78%; background:#e9e5ff; border:1px solid var(--purple); padding:0.4em; border-radius:4px;">Integration Tests<br><span style="color:var(--muted); font-size:0.85em;">some · moderate speed · test interactions</span></div>
+        <div style="color:var(--green);  margin:0.2em auto; width:96%; background:#dce7e7; border:1px solid var(--green);  padding:0.4em; border-radius:4px;">Unit Tests<br><span style="color:var(--muted); font-size:0.85em;">many · fast · isolated · milliseconds each</span></div>
       </div>
     </div>
     <div>
@@ -472,7 +473,7 @@
 
 
 <!-- ═══════════════════════════════ SLIDE 09 — QUALITY GATES ═══════════════════════════════ -->
-<section data-background-color="#0a0a0f">
+<section data-background-color="#eaeff2">
   <div class="slide-hdr">
     <span class="tag">08</span>
     <h2>Quality Gates</h2>
@@ -508,7 +509,7 @@ branch:   76.1%  ✘ (< 75%)  → FAIL</code></pre>
 
 
 <!-- ═══════════════════════════════ SLIDE 10 — BRANCHING STRATEGIES ═══════════════════════════════ -->
-<section data-background-color="#0a0a0f">
+<section data-background-color="#eaeff2">
   <div class="slide-hdr">
     <span class="tag">09</span>
     <h2>Branching Strategies &amp; Triggers</h2>
@@ -551,7 +552,7 @@ branch:   76.1%  ✘ (< 75%)  → FAIL</code></pre>
 
 
 <!-- ═══════════════════════════════ SLIDE 11 — ARTEFACTS AND ENVIRONMENTS ═══════════════════════════════ -->
-<section data-background-color="#0a0a0f">
+<section data-background-color="#eaeff2">
   <div class="slide-hdr">
     <span class="tag">10</span>
     <h2>Artefacts &amp; Environments</h2>
@@ -590,7 +591,7 @@ branch:   76.1%  ✘ (< 75%)  → FAIL</code></pre>
 
 
 <!-- ═══════════════════════════════ SLIDE 12 — DOCKER IN CI/CD ═══════════════════════════════ -->
-<section data-background-color="#0a0a0f">
+<section data-background-color="#eaeff2">
   <div class="slide-hdr">
     <span class="tag">11</span>
     <h2>Docker in CI/CD</h2>
@@ -643,7 +644,7 @@ CMD ["python", "main.py"]</code></pre>
 
 
 <!-- ═══════════════════════════════ SLIDE 13 — GITHUB ACTIONS ═══════════════════════════════ -->
-<section data-background-color="#0a0a0f">
+<section data-background-color="#eaeff2">
   <div class="slide-hdr">
     <span class="tag">12</span>
     <h2>Tool Deep Dive: GitHub Actions</h2>
@@ -709,7 +710,7 @@ jobs:
 
 
 <!-- ═══════════════════════════════ SLIDE 14 — GITLAB CI & JENKINS ═══════════════════════════════ -->
-<section data-background-color="#0a0a0f">
+<section data-background-color="#eaeff2">
   <div class="slide-hdr">
     <span class="tag">13</span>
     <h2>CI/CD Tool Landscape</h2>
@@ -769,7 +770,7 @@ jobs:
 
 
 <!-- ═══════════════════════════════ SLIDE 15 — SECRETS AND SECURITY ═══════════════════════════════ -->
-<section data-background-color="#0a0a0f">
+<section data-background-color="#eaeff2">
   <div class="slide-hdr">
     <span class="tag">14</span>
     <h2>Secrets &amp; Pipeline Security</h2>
@@ -821,7 +822,7 @@ jobs:
 
 
 <!-- ═══════════════════════════════ SLIDE 16 — DEPLOYMENT STRATEGIES ═══════════════════════════════ -->
-<section data-background-color="#0a0a0f">
+<section data-background-color="#eaeff2">
   <div class="slide-hdr">
     <span class="tag">15</span>
     <h2>Deployment Strategies</h2>
@@ -861,7 +862,7 @@ jobs:
 
 
 <!-- ═══════════════════════════════ SLIDE 17 — OBSERVABILITY & ROLLBACKS ═══════════════════════════════ -->
-<section data-background-color="#0a0a0f">
+<section data-background-color="#eaeff2">
   <div class="slide-hdr">
     <span class="tag">16</span>
     <h2>Observability &amp; Rollback</h2>
@@ -907,7 +908,7 @@ jobs:
 
 
 <!-- ═══════════════════════════════ SLIDE 18 — PIPELINE OPTIMISATION ═══════════════════════════════ -->
-<section data-background-color="#0a0a0f">
+<section data-background-color="#eaeff2">
   <div class="slide-hdr">
     <span class="tag">17</span>
     <h2>Keeping Pipelines Fast</h2>
@@ -950,7 +951,7 @@ jobs:
 
 
 <!-- ═══════════════════════════════ SLIDE 19 — METRICS: DORA ═══════════════════════════════ -->
-<section data-background-color="#0a0a0f">
+<section data-background-color="#eaeff2">
   <div class="slide-hdr">
     <span class="tag">18</span>
     <h2>Measuring CI/CD Effectiveness: DORA Metrics</h2>
@@ -986,7 +987,7 @@ jobs:
 
 
 <!-- ═══════════════════════════════ SLIDE 20 — SUMMARY ═══════════════════════════════ -->
-<section data-background-color="#0a0a0f">
+<section data-background-color="#eaeff2">
   <div class="slide-hdr">
     <span class="tag">19</span>
     <h2>Summary &amp; Next Steps</h2>
