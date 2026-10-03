@@ -425,7 +425,7 @@ Split slow test suites across multiple jobs that run concurrently. Use `needs:` 
 |------|-------|-------------|-----------|----------------|
 | **GitHub Actions** | SaaS / self-hosted | `.github/workflows/*.yml` | Tight GitHub integration, huge Marketplace, free for public repos | Costs scale with minutes on private repos |
 | **GitLab CI/CD** | SaaS / self-hosted | `.gitlab-ci.yml` | All-in-one DevOps platform, strong environments & review apps | GitLab hosting required (or self-host) |
-| **Jenkins** | Self-hosted | `Jenkinsfile` (Groovy) | Fully configurable, huge plugin ecosystem, runs anywhere | High operational burden; Groovy DSL has a learning curve |
+| **[Jenkins](https://brendanjameslynskey.github.io/Introduction_to_Jenkins/)** | Self-hosted | `Jenkinsfile` (Groovy) | Fully configurable, huge plugin ecosystem, runs anywhere | High operational burden; Groovy DSL has a learning curve |
 | **CircleCI** | SaaS / self-hosted | `.circleci/config.yml` | Fast, good caching, orbs for reusable config | Costs can surprise at scale |
 | **Tekton / ArgoCD** | Kubernetes-native | CRD YAML manifests | Cloud-native, GitOps-friendly, very scalable | Steep learning curve; requires Kubernetes |
 
