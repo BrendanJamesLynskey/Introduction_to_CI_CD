@@ -55,6 +55,7 @@ Single self-contained `index.html` — no build step, no npm, no dependencies to
 - [Cloud_aaS_03_PaaS_FaaS_CaaS](https://github.com/BrendanJamesLynskey/Cloud_aaS_03_PaaS_FaaS_CaaS) — what these pipelines deploy to (managed compute layers).
 - [Cloud_aaS_05_Cloud_Security](https://github.com/BrendanJamesLynskey/Cloud_aaS_05_Cloud_Security) — securing the pipeline itself (OIDC federation, signed builds, SBOM, SLSA, Sigstore).
 - [Introduction_to_Jenkins](https://github.com/BrendanJamesLynskey/Introduction_to_Jenkins) — a newcomer's tour of Jenkins, the self-hosted tool on the Tool Landscape slide, with real screenshots and pipelines.
+- [Introduction_to_GitHub_Actions](https://github.com/BrendanJamesLynskey/Introduction_to_GitHub_Actions) — the GitHub Actions deep dive behind slide 12: workflows, caching, security, debugging and rulesets, every example run for real.
 - Series hub: [Cloud `*aaS`](https://github.com/BrendanJamesLynskey/Cloud_aaS_Hub).
 
 ## References

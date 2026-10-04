@@ -417,6 +417,10 @@ jobs:
 
 Split slow test suites across multiple jobs that run concurrently. Use `needs:` to express dependencies between jobs.
 
+### Go deeper
+
+[Introduction to GitHub Actions](https://brendanjameslynskey.github.io/Introduction_to_GitHub_Actions/): matrices, caching, reuse, security, debugging and protecting `main`, every example run for real.
+
 ---
 
 ## Slide 13 — CI/CD Tool Landscape
