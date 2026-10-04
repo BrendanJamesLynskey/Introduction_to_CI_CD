@@ -132,6 +132,21 @@
   /* reduce default margins */
   .reveal ul, .reveal ol { margin: .15em 0 .15em 1em; }
 .reveal .slides > section { display: flex !important; flex-direction: column !important; overflow-y: auto !important; align-items: stretch !important; justify-content: flex-start !important; }
+
+  /* ── brief 10 (2026-10-04): no clipped code, new-slide styles ── */
+  .reveal pre code { font-size: .46em; max-height: none; white-space: pre-wrap !important; overflow-wrap: anywhere; }
+  .cols > div { min-width: 0; }
+  .reveal a { color: var(--blue); }
+  .dense .card li, .dense .card p, .dense p { font-size: .42em; }
+  .dense .card h3 { font-size: .56em; }
+  .dense .card { padding: .25em .5em; }
+  .dense .card ul { padding-left: .9em; }
+  .dense pre code { font-size: .42em; }
+  .reveal p.lead { font-size: .48em; margin: 0 0 .3em; }
+  .reveal p.cap { font-size: .38em; color: var(--muted); line-height: 1.35; margin: .3em 0 0; }
+  .reveal p.kt { font-size: .4em; line-height: 1.3; margin: 0 0 .12em; color: var(--text); text-align: left; }
+  .reveal p.kt b { color: var(--amber); }
+  .reveal p.kt a { font-family: 'Overpass Mono', monospace; font-size: .9em; }
 </style>
 <style>.reveal .slide-number{background-color:transparent}</style>
 </head>
@@ -200,6 +215,7 @@
           <li>Stages: build, test, package, deploy</li>
           <li>Triggers and branching strategies</li>
           <li>Artefacts and environments</li>
+          <li>Protecting <code>main</code>; CI across repositories</li>
         </ul>
       </div>
     </div>
@@ -210,6 +226,7 @@
           <li>Test pyramid</li>
           <li>Unit, integration, E2E tests</li>
           <li>Code coverage and quality gates</li>
+          <li>Lint, types, Lighthouse; tests that pin results</li>
         </ul>
       </div>
       <div class="card blue" style="margin-top:0.5em;">
@@ -218,7 +235,8 @@
           <li>GitHub Actions, GitLab CI, Jenkins</li>
           <li>Docker in CI/CD</li>
           <li>Secrets and security</li>
-          <li>Observability and rollbacks</li>
+          <li>Deploying safely: migrations, smoke checks, health endpoints</li>
+          <li>Observability and rollbacks; a case study; key terms</li>
         </ul>
       </div>
     </div>
@@ -505,13 +523,111 @@ branch:   76.1%  ✘ (< 75%)  → FAIL</code></pre>
     <h3 class="b">Tip</h3>
     <p>Start with loose gates and tighten over time. Enforcing 80% coverage on a legacy codebase from day one is demoralising — begin at your current level and ratchet upward.</p>
   </div>
+  <p style="font-size:.4em; margin-top:.5em;">More gates: lint, types, formatting and Lighthouse on <a href="#/9">slide 09</a>; tests that pin results on <a href="#/10">slide 10</a>.</p>
 </section>
 
 
-<!-- ═══════════════════════════════ SLIDE 10 — BRANCHING STRATEGIES ═══════════════════════════════ -->
+<!-- ═══════════════════════════════ SLIDE 10 — WEB QUALITY GATES ═══════════════════════════════ -->
 <section data-background-color="#eaeff2">
   <div class="slide-hdr">
     <span class="tag">09</span>
+    <h2>Quality Gates for Code and Web Pages</h2>
+  </div>
+  <p class="lead">Tests prove behaviour. These cheaper gates catch the rest in seconds, before a reviewer reads a line.</p>
+  <div class="cols cols-2 dense">
+    <div>
+      <div class="card green">
+        <h3 class="g">Static checks</h3>
+        <ul>
+          <li><b>Lint</b>: a linter (ESLint, ruff, clippy) flags suspicious or banned code patterns without running the code.</li>
+          <li><b>Typecheck</b>: the compiler checks every type without building (<code>tsc --noEmit</code>), so a wrong argument fails CI, not production.</li>
+          <li><b>Format check</b>: a formatter (Prettier, <code>cargo fmt</code>, <code>ruff format</code>) in check mode fails if any file is not formatted, so reviews never argue about layout.</li>
+          <li><b>actionlint</b> lints the workflow files themselves (<a href="https://brendanjameslynskey.github.io/Introduction_to_GitHub_Actions/#/16">GitHub Actions deck, slide 16</a>).</li>
+        </ul>
+      </div>
+      <div class="card purple" style="margin-top:.4em;">
+        <h3 class="p">A real gate: three pages, three runs each</h3>
+        <pre><code>"assertions": {
+  "categories:performance": ["error", { "minScore": 0.9 }],
+  "categories:accessibility": ["error", { "minScore": 0.9 }],
+  "categories:best-practices": ["error", { "minScore": 0.9 }]
+}</code></pre>
+        <p>From a Next.js site on this GitHub: its <code>Lighthouse</code> job fails the PR if the median score of any category drops below 0.9.</p>
+      </div>
+    </div>
+    <div>
+      <div class="card amber">
+        <h3 class="a">Lighthouse and budgets</h3>
+        <ul>
+          <li><b>Lighthouse</b>: Google's page auditor. It loads a page in headless Chrome and scores performance, accessibility, best practices and SEO from 0 to 100.</li>
+          <li><b>Lighthouse CI (LHCI)</b>: runs Lighthouse inside the pipeline on chosen URLs, several times, and fails the job when an assertion is not met.</li>
+          <li><b>Performance budget</b>: the limit a gate enforces, either a minimum score (≥ 0.9) or a maximum cost (script size, LCP time).</li>
+          <li><b>Core Web Vitals</b>: Google's three measures of real visits. LCP (loading, good ≤ 2.5 s), INP (response to input, ≤ 200 ms) and CLS (layout shift, ≤ 0.1), judged at the 75th percentile.</li>
+        </ul>
+      </div>
+      <div class="card blue" style="margin-top:.4em;">
+        <h3 class="b">Hedges</h3>
+        <ul>
+          <li>A lab run has no real user input, so it cannot measure INP. Lighthouse uses Total Blocking Time instead.</li>
+          <li>Scores move from run to run, and the weights change between versions (v10+: TBT 30 %, LCP 25 %, CLS 25 %, FCP 10 %, Speed Index 10 %). Gate on a median, and check the <a href="https://developer.chrome.com/docs/lighthouse/performance/performance-scoring">scoring docs</a> and <a href="https://web.dev/articles/vitals">web.dev/vitals</a>.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════ SLIDE 11 — TESTS THAT GUARD RESULTS ═══════════════════════════════ -->
+<section data-background-color="#eaeff2">
+  <div class="slide-hdr">
+    <span class="tag">10</span>
+    <h2>Tests That Guard the Results</h2>
+  </div>
+  <p class="lead">Simulators and numeric code need tests that pin numbers, not only behaviour. Every example here runs in CI on this GitHub.</p>
+  <div class="cols cols-2 dense">
+    <div>
+      <div class="card green">
+        <h3 class="g">Pinning the numbers</h3>
+        <ul>
+          <li><b>Test fixture</b>: the fixed inputs a test runs against, such as a saved trace, a config file or a seeded database. Commit them: a fixture hidden by <code>.gitignore</code> passed locally and failed CI on 3 Oct 2026.</li>
+          <li><b>Golden test</b> (or <b>headline-number check</b>): output must equal a saved, reviewed answer. FHE_Accelerator_Sim's CI asserts its ARK-class baseline is still 13.94 ms per bootstrap; changing it is a deliberate re-bless.</li>
+          <li><b>Parity test</b>: two implementations of one model must agree. The JavaScript port of Disaggregated_Inference_Sim is <b>bit-exact</b> with the Python (identical floats); only transcendental functions get a tolerance.</li>
+          <li><b>Differential test</b>: the same random inputs go through two implementations and the outputs are compared (Rust_DES_Kernel against the Python simulator).</li>
+        </ul>
+      </div>
+      <div class="card purple" style="margin-top:.4em;">
+        <h3 class="p">Gating on speed</h3>
+        <ul>
+          <li><b>Performance regression gate</b>: the build fails if a benchmark slows beyond a threshold, set wider than the run-to-run noise you measured (<a href="https://brendanjameslynskey.github.io/SimEng_07_Jenkins_for_Simulation_Teams/#slide-08">SimEng 07, slide 08</a>).</li>
+        </ul>
+      </div>
+    </div>
+    <div>
+      <div class="card amber">
+        <h3 class="a">Browser tests that mean it</h3>
+        <ul>
+          <li><b>Playwright</b>: a test runner that drives real Chromium, Firefox and WebKit through the app, as a user would.</li>
+          <li><b>e2e on a production build</b>: run the end-to-end tests against <code>next build</code> + <code>next start</code>, not the dev server, so the bundle that ships is the one tested.</li>
+          <li><b>Flaky test</b>: a test that passes and fails on the same code. Find the race (usually a missing wait) rather than adding retries. One e2e test read a metrics page before its comment POST had finished, and failed once in CI.</li>
+        </ul>
+      </div>
+      <div class="card blue" style="margin-top:.4em;">
+        <h3 class="b">Searching for bugs</h3>
+        <ul>
+          <li><b>Property-based test</b>: you state a rule ("tokens out equal tokens in") and a tool (Hypothesis, proptest) generates hundreds of inputs, shrinking any failure to the smallest case.</li>
+          <li><b>Mutation testing</b>: a tool (mutmut, cargo-mutants) plants small bugs; any that the tests miss mark a blind spot. A stricter measure than coverage.</li>
+        </ul>
+      </div>
+      <p class="cap">Go deeper: <a href="https://brendanjameslynskey.github.io/SimEng_06_Testing_Frameworks/">Testing Frameworks for Simulators</a> (fixtures, Hypothesis, golden tests, mutation testing).</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════ SLIDE 12 — BRANCHING STRATEGIES ═══════════════════════════════ -->
+<section data-background-color="#eaeff2">
+  <div class="slide-hdr">
+    <span class="tag">11</span>
     <h2>Branching Strategies &amp; Triggers</h2>
   </div>
   <div class="cols cols-2">
@@ -551,10 +667,52 @@ branch:   76.1%  ✘ (< 75%)  → FAIL</code></pre>
 </section>
 
 
-<!-- ═══════════════════════════════ SLIDE 11 — ARTEFACTS AND ENVIRONMENTS ═══════════════════════════════ -->
+<!-- ═══════════════════════════════ SLIDE 13 — PROTECTING MAIN ═══════════════════════════════ -->
 <section data-background-color="#eaeff2">
   <div class="slide-hdr">
-    <span class="tag">10</span>
+    <span class="tag">12</span>
+    <h2>Protecting main: Rules, Required Checks and Merges</h2>
+  </div>
+  <p class="lead"><code>main</code> is what ships. Protection rules turn the pipeline's verdict from advice into a rule.</p>
+  <div class="cols cols-2 dense">
+    <div>
+      <div class="card amber">
+        <h3 class="a">The rules</h3>
+        <ul>
+          <li><b>Pull request (PR)</b>: a request to merge a branch into <code>main</code>. CI runs on it and reviewers comment before anything lands (GitLab calls it a merge request).</li>
+          <li><b>Branch protection</b>: per-branch settings that stop direct pushes and set the conditions for merging.</li>
+          <li><b>Ruleset</b>: GitHub's newer form of the same rules. Several can apply to one branch (the strictest wins), they can be disabled without being deleted, and anyone who can read the repo can see them.</li>
+          <li><b>Required status check</b>: a named CI check (on GitHub, the job's name) that must pass before the PR can merge. Rename the job and the rule waits for the old name forever.</li>
+          <li><b>Required reviews</b> and <b>CODEOWNERS</b>: a number of approvals before merging; a <code>CODEOWNERS</code> file names who must review which paths.</li>
+        </ul>
+      </div>
+    </div>
+    <div>
+      <div class="card red">
+        <h3 class="r">What they stop, and who may skip them</h3>
+        <ul>
+          <li><b>Force push</b>: <code>git push --force</code> replaces the remote branch's history. Protection blocks it on <code>main</code>, and blocks deleting the branch.</li>
+          <li><b>Bypass list</b> (rulesets) or <b>admin enforcement</b> (branch protection): whether the rules bind administrators too. With an empty bypass list even the owner's push is refused: <code>GH013 … Changes must be made through a pull request</code>.</li>
+        </ul>
+      </div>
+      <div class="card green" style="margin-top:.4em;">
+        <h3 class="g">Merging and showing the state</h3>
+        <ul>
+          <li><b>Squash merge</b>: the PR's commits become one commit on <code>main</code>, one per change.</li>
+          <li><b>Green at HEAD</b>: the newest commit on the branch (its HEAD) has passed every check. "It was green earlier" does not count.</li>
+          <li><b>CI status badge</b>: an image in the README showing the latest run's result on <code>main</code>.</li>
+        </ul>
+      </div>
+      <p class="cap">On this GitHub: a Next.js site requires five checks (Lint &amp; Typecheck, Unit Tests, Verify maths against PyTorch fixtures, E2E Tests, Lighthouse); the GitHub Actions deck runs a ruleset with an empty bypass list and shows a PR blocked (<a href="https://brendanjameslynskey.github.io/Introduction_to_GitHub_Actions/#/19">slides 19</a>, <a href="https://brendanjameslynskey.github.io/Introduction_to_GitHub_Actions/#/20">20</a>). Plans differ for private repos: <a href="https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/about-rulesets">about rulesets</a>, <a href="https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners">code owners</a>.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════ SLIDE 14 — ARTEFACTS AND ENVIRONMENTS ═══════════════════════════════ -->
+<section data-background-color="#eaeff2">
+  <div class="slide-hdr">
+    <span class="tag">13</span>
     <h2>Artefacts &amp; Environments</h2>
   </div>
   <div class="cols cols-2">
@@ -590,15 +748,15 @@ branch:   76.1%  ✘ (< 75%)  → FAIL</code></pre>
 </section>
 
 
-<!-- ═══════════════════════════════ SLIDE 12 — DOCKER IN CI/CD ═══════════════════════════════ -->
+<!-- ═══════════════════════════════ SLIDE 15 — DOCKER IN CI/CD ═══════════════════════════════ -->
 <section data-background-color="#eaeff2">
   <div class="slide-hdr">
-    <span class="tag">11</span>
+    <span class="tag">14</span>
     <h2>Docker in CI/CD</h2>
   </div>
   <p>Containers solve the <span class="a">"works on my machine"</span> problem. A Docker image bundles the application and its entire runtime — the same image runs in CI, staging, and production.</p>
 
-  <div class="cols cols-6040" style="margin-top:0.5em;">
+  <div class="cols cols-2" style="margin-top:0.5em;">
     <div>
       <pre><code># Multi-stage Dockerfile (Python example)
 FROM python:3.12-slim AS builder
@@ -643,10 +801,10 @@ CMD ["python", "main.py"]</code></pre>
 </section>
 
 
-<!-- ═══════════════════════════════ SLIDE 13 — GITHUB ACTIONS ═══════════════════════════════ -->
+<!-- ═══════════════════════════════ SLIDE 16 — GITHUB ACTIONS ═══════════════════════════════ -->
 <section data-background-color="#eaeff2">
   <div class="slide-hdr">
-    <span class="tag">12</span>
+    <span class="tag">15</span>
     <h2>Tool Deep Dive: GitHub Actions</h2>
   </div>
   <div class="cols cols-6040">
@@ -710,10 +868,10 @@ jobs:
 </section>
 
 
-<!-- ═══════════════════════════════ SLIDE 14 — GITLAB CI & JENKINS ═══════════════════════════════ -->
+<!-- ═══════════════════════════════ SLIDE 17 — GITLAB CI & JENKINS ═══════════════════════════════ -->
 <section data-background-color="#eaeff2">
   <div class="slide-hdr">
-    <span class="tag">13</span>
+    <span class="tag">16</span>
     <h2>CI/CD Tool Landscape</h2>
   </div>
   <table>
@@ -770,10 +928,49 @@ jobs:
 </section>
 
 
-<!-- ═══════════════════════════════ SLIDE 15 — SECRETS AND SECURITY ═══════════════════════════════ -->
+<!-- ═══════════════════════════════ SLIDE 18 — CI ACROSS REPOSITORIES ═══════════════════════════════ -->
 <section data-background-color="#eaeff2">
   <div class="slide-hdr">
-    <span class="tag">14</span>
+    <span class="tag">17</span>
+    <h2>CI Across Repositories</h2>
+  </div>
+  <p class="lead">When one repo installs another, a push to the library can break the app without a line of the app changing.</p>
+  <div class="cols cols-2 dense">
+    <div>
+      <div class="card blue">
+        <h3 class="b">Upstream and downstream</h3>
+        <ul>
+          <li><b>Downstream (dependent) repo</b>: a repo that installs yours. Its CI is the real test of an upstream change. Here, Rust_DES_Kernel and Torch_Sim_Frontend install Disaggregated_Inference_Sim; RTL_CoSim_NTT, SystemC_Accelerator_Model and Memory_System_Sim install FHE_Accelerator_Sim.</li>
+          <li><b>Tracking a branch vs pinning</b>: <code>pkg @ git+URL</code> installs whatever <code>main</code> is today; <code>git+URL@&lt;sha&gt;</code> pins one commit. Tracking catches breakage at once but can turn a green repo red overnight. Pinning is reproducible but needs deliberate bumps.</li>
+          <li><b>Re-running a workflow</b>: runs the same commit's checks again (same <code>GITHUB_SHA</code>, within 30 days). An unpinned install resolves again, so a re-run tests the new upstream: <code>gh run rerun &lt;id&gt;</code>, or <code>gh workflow run ci.yml</code> where the workflow has a manual trigger.</li>
+        </ul>
+      </div>
+    </div>
+    <div>
+      <div class="card amber">
+        <h3 class="a">Keeping installs honest</h3>
+        <ul>
+          <li><b>Lockfile</b>: a file recording the exact version of every dependency (<code>pnpm-lock.yaml</code>, <code>Cargo.lock</code>). <code>pnpm install --frozen-lockfile</code> fails rather than quietly changing it in CI.</li>
+          <li><b>Stale environment</b>: pip skips a <code>pkg @ git+…</code> that is already installed, so a reused venv on a long-lived agent keeps testing the old upstream. The Jenkinsfiles force it:</li>
+        </ul>
+        <pre><code>.venv/bin/pip install -q --force-reinstall --no-deps "disagg-sim @ git+https://github.com/BrendanJamesLynskey/Disaggregated_Inference_Sim"</code></pre>
+      </div>
+      <div class="card green" style="margin-top:.4em;">
+        <h3 class="g">Automating it</h3>
+        <ul>
+          <li>The upstream's CI can start the downstream's with <code>repository_dispatch</code> (<a href="https://brendanjameslynskey.github.io/Introduction_to_GitHub_Actions/#/23">GitHub Actions deck, slide 23</a>); Dependabot can open the pin bumps (<a href="https://brendanjameslynskey.github.io/Introduction_to_GitHub_Actions/#/14">slide 14</a>).</li>
+        </ul>
+      </div>
+      <p class="cap">Re-run rules: <a href="https://docs.github.com/en/actions/how-tos/manage-workflow-runs/re-run-workflows-and-jobs">docs.github.com</a>. pip VCS installs: <a href="https://pip.pypa.io/en/stable/topics/vcs-support/">pip docs</a>.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════ SLIDE 19 — SECRETS AND SECURITY ═══════════════════════════════ -->
+<section data-background-color="#eaeff2">
+  <div class="slide-hdr">
+    <span class="tag">18</span>
     <h2>Secrets &amp; Pipeline Security</h2>
   </div>
   <div class="cols cols-2">
@@ -822,10 +1019,10 @@ jobs:
 </section>
 
 
-<!-- ═══════════════════════════════ SLIDE 16 — DEPLOYMENT STRATEGIES ═══════════════════════════════ -->
+<!-- ═══════════════════════════════ SLIDE 20 — DEPLOYMENT STRATEGIES ═══════════════════════════════ -->
 <section data-background-color="#eaeff2">
   <div class="slide-hdr">
-    <span class="tag">15</span>
+    <span class="tag">19</span>
     <h2>Deployment Strategies</h2>
   </div>
   <p>How you deploy to production determines your blast radius and rollback speed.</p>
@@ -862,10 +1059,91 @@ jobs:
 </section>
 
 
-<!-- ═══════════════════════════════ SLIDE 17 — OBSERVABILITY & ROLLBACKS ═══════════════════════════════ -->
+<!-- ═══════════════════════════════ SLIDE 21 — DEPLOYING SAFELY ═══════════════════════════════ -->
 <section data-background-color="#eaeff2">
   <div class="slide-hdr">
-    <span class="tag">16</span>
+    <span class="tag">20</span>
+    <h2>Deploying Safely: Previews, Settings and Migrations</h2>
+  </div>
+  <div class="cols cols-2 dense">
+    <div>
+      <div class="card green">
+        <h3 class="g">Where code goes</h3>
+        <ul>
+          <li><b>Preview deployment</b>: a throwaway copy of the app built from a branch or PR, with its own URL, for checking before merge. <b>Production deployment</b>: the one the real domain serves. On Vercel, by default, the production branch (usually <code>main</code>) deploys to production and other branches and PRs get previews.</li>
+          <li><b>Git-integrated vs CLI deploy</b>: with Git integration the platform deploys on every push. A CLI deploy (<code>vercel deploy --prod</code>) ships the folder you run it in, so deploy a <b>clean export</b> (<code>git archive HEAD</code>), not a working tree with local files in it.</li>
+          <li><b>GitHub Pages</b>: GitHub serves a branch (or a workflow's output) as a static site. These decks publish that way: push to <code>main</code> and the site updates within minutes.</li>
+          <li><b>Custom domain</b>: your own name for the production site. <b>Redirect (308)</b>: when the domain moves, the old URL should answer 308 Permanent Redirect, which keeps the method and body (a 301 may turn a POST into a GET).</li>
+        </ul>
+      </div>
+    </div>
+    <div>
+      <div class="card amber">
+        <h3 class="a">Settings that live outside git</h3>
+        <ul>
+          <li><b>Environment variable</b>: a setting the app reads at run time (<code>DATABASE_URL</code>), kept out of git and set separately for development, preview and production. Passwords and keys among them are secrets.</li>
+          <li><b>Sensitive variable</b>: a write-only variable that cannot be read back after saving, so <code>vercel env pull</code> returns it empty (Vercel now calls this type "Secret").</li>
+          <li><b>OAuth callback URL</b>: where the identity provider sends the user after sign-in. It must match the deployed domain, so a domain move means updating the OAuth app.</li>
+        </ul>
+      </div>
+      <div class="card red" style="margin-top:.4em;">
+        <h3 class="r">Changing the database</h3>
+        <ul>
+          <li><b>Schema migration</b>: a versioned script that changes the database's structure (a table, a column), applied in order. <b>Seeding</b>: loading starter rows after migrating.</li>
+          <li><b>Migrate before deploy</b>: run the new migration on production first, then deploy the code that needs it. The old code keeps running in between.</li>
+          <li><b>Expand/contract</b>: what makes that safe. Expand (add nullable columns or new tables that old code ignores), deploy, backfill, then contract (drop the old) in a later release.</li>
+        </ul>
+      </div>
+      <p class="cap"><a href="https://vercel.com/docs/deployments/environments">Vercel environments</a> · <a href="https://vercel.com/docs/environment-variables/sensitive-environment-variables">write-only variables</a> · <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status/308">HTTP 308</a> · <a href="https://martinfowler.com/bliki/ParallelChange.html">expand/contract (Fowler)</a></p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════ SLIDE 22 — AFTER THE DEPLOY ═══════════════════════════════ -->
+<section data-background-color="#eaeff2">
+  <div class="slide-hdr">
+    <span class="tag">21</span>
+    <h2>After the Deploy: Smoke Checks and Health Endpoints</h2>
+  </div>
+  <p class="lead">CI tested a copy. Production has its own database, runtime and settings, so check the live system too.</p>
+  <div class="cols cols-2 dense">
+    <div>
+      <div class="card green">
+        <h3 class="g">Checking the live system</h3>
+        <ul>
+          <li><b>Post-deploy verification</b>: the checks run against the live URL straight after a deploy, before anyone calls it done.</li>
+          <li><b>Health endpoint</b>: a URL that reports whether the app's dependencies work. It answers 200 when healthy and 503 when, say, the database is down or its schema is behind the code. Load balancers and Kubernetes probes poll the same kind of URL.</li>
+          <li><b>Smoke check</b>: a fast, shallow test of the deployed system: every page answers 200 and the health endpoint is healthy. (The name comes from hardware: switch on, and check nothing smokes.) It exits non-zero on any failure.</li>
+          <li><b>Smoke test on real data</b>: an empty list never runs the rendering code, so the check fetches a list that really holds an item and requires it to render.</li>
+        </ul>
+      </div>
+      <div class="card blue" style="margin-top:.4em;">
+        <h3 class="b">A live health reply (4 Oct 2026)</h3>
+        <pre><code>GET /api/health → 200
+{"ok":true,"data":{"healthy":true,"db":"up","dbError":null,
+ "schema":{"status":"current","applied":1,"expected":1, …}}}</code></pre>
+      </div>
+    </div>
+    <div>
+      <div class="card amber">
+        <h3 class="a">When something is wrong</h3>
+        <ul>
+          <li><b>Runtime logs</b>: the platform's record of live requests and errors. <b>Error grouping</b> shows one bug hit 14 times as one entry, not 14 lines. On Vercel's Hobby plan the CLI reached back only about an hour here; the dashboard keeps grouped errors for days.</li>
+          <li><b>Runbook</b>: the written, step-by-step procedure for an operation (deploy, restore, rotate a key), so it is done the same way every time, by anyone. This site's deploy runbook: migrate, deploy, smoke-check, read the logs.</li>
+          <li><b>Render before write</b>: do every step that can fail before storing anything. Otherwise a crash after the write leaves a stored comment and an error; the user retries, and the comment appears three times.</li>
+        </ul>
+      </div>
+      <p class="cap">Health-check patterns: <a href="https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/">Kubernetes probes</a>. The case study on slide 23 shows why each of these exists.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════ SLIDE 23 — OBSERVABILITY & ROLLBACKS ═══════════════════════════════ -->
+<section data-background-color="#eaeff2">
+  <div class="slide-hdr">
+    <span class="tag">22</span>
     <h2>Observability &amp; Rollback</h2>
   </div>
   <p>Deploying fast is only safe if you can <span class="a">detect failures quickly</span> and <span class="g">recover faster than you broke things</span>.</p>
@@ -908,10 +1186,50 @@ jobs:
 </section>
 
 
-<!-- ═══════════════════════════════ SLIDE 18 — PIPELINE OPTIMISATION ═══════════════════════════════ -->
+<!-- ═══════════════════════════════ SLIDE 24 — CASE STUDY ═══════════════════════════════ -->
 <section data-background-color="#eaeff2">
   <div class="slide-hdr">
-    <span class="tag">17</span>
+    <span class="tag">23</span>
+    <h2>Case Study: Two Failures CI Did Not Catch</h2>
+  </div>
+  <p class="lead">Both happened in 2026 to a small Next.js + Postgres site on Vercel, built from this GitHub. Both had green CI.</p>
+  <div class="cols cols-2 dense">
+    <div>
+      <div class="card red">
+        <h3 class="r">1. The database nobody migrated</h3>
+        <ul>
+          <li>To let a fresh clone run without a database, the data layer had a <b>silent fallback</b>: an error swallowed and replaced by a default (here, empty data), so the failure never shows.</li>
+          <li>Production's database had never been migrated. Every query failed, every page showed empty lists, and nothing reported an error, for months.</li>
+          <li><b>Now caught by</b>: a health endpoint that refuses to fall back (503 for a schema that is behind or missing), a migrate-first step in the runbook, and the post-deploy smoke check. The admin page also counts fallbacks, so a recent failure stays visible.</li>
+        </ul>
+      </div>
+      <p class="cap">Lesson: every fallback needs a signal that it happened.</p>
+    </div>
+    <div>
+      <div class="card amber">
+        <h3 class="a">2. Works locally, fails on the platform</h3>
+        <ul>
+          <li><b>Works locally, fails on the platform</b>: production's runtime differs from the one CI used (here, the module loader).</li>
+          <li><b>Module loader</b>: the part of a runtime that finds and loads packages. Node can <code>require()</code> an ES module (a package written with <code>import</code>/<code>export</code>); some platform loaders cannot.</li>
+          <li>A comment sanitiser pulled in a package that is an ES module only, loaded with <code>require()</code>. Node 20.19+ and 22.12+ allow that, so local runs and CI passed. The platform's function loader refused (<code>ERR_REQUIRE_ESM</code>), and every comment list with a comment in it returned 500: 14 errors in under 3 minutes.</li>
+          <li><b>Now caught by</b>: CI's end-to-end server runs under a flag that makes Node refuse the same thing, so the bug would fail the PR:</li>
+        </ul>
+        <pre><code>command:
+  "pnpm build &amp;&amp; node --no-experimental-require-module node_modules/next/dist/bin/next start -p 3000",</code></pre>
+        <ul>
+          <li>Also: a sanitiser the bundler can package, render before write, and a smoke check that reads a real comment.</li>
+        </ul>
+      </div>
+      <p class="cap"><a href="https://nodejs.org/api/modules.html#loading-ecmascript-modules-using-require">Node: require() of ES modules</a></p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════ SLIDE 25 — PIPELINE OPTIMISATION ═══════════════════════════════ -->
+<section data-background-color="#eaeff2">
+  <div class="slide-hdr">
+    <span class="tag">24</span>
     <h2>Keeping Pipelines Fast</h2>
   </div>
   <p>A slow pipeline is a pipeline that developers <span class="r">work around</span>. Target <span class="a">&lt; 10 minutes</span> for the core CI loop.</p>
@@ -951,10 +1269,10 @@ jobs:
 </section>
 
 
-<!-- ═══════════════════════════════ SLIDE 19 — METRICS: DORA ═══════════════════════════════ -->
+<!-- ═══════════════════════════════ SLIDE 26 — METRICS: DORA ═══════════════════════════════ -->
 <section data-background-color="#eaeff2">
   <div class="slide-hdr">
-    <span class="tag">18</span>
+    <span class="tag">25</span>
     <h2>Measuring CI/CD Effectiveness: DORA Metrics</h2>
   </div>
   <p>The <span class="a">DORA</span> (DevOps Research and Assessment) team identified four metrics that predict software delivery performance.</p>
@@ -987,10 +1305,126 @@ jobs:
 </section>
 
 
-<!-- ═══════════════════════════════ SLIDE 20 — SUMMARY ═══════════════════════════════ -->
+<!-- ═══════════════════════════════ SLIDE 27 — KEY TERMS 1 ═══════════════════════════════ -->
 <section data-background-color="#eaeff2">
   <div class="slide-hdr">
-    <span class="tag">19</span>
+    <span class="tag">26</span>
+    <h2>Key Terms (1 of 2)</h2>
+  </div>
+  <p class="cap" style="margin-top:0;">Every CI/CD term used on this GitHub's projects, with the slide that explains it. Bare numbers are slides of this deck; GHA = <a href="https://brendanjameslynskey.github.io/Introduction_to_GitHub_Actions/">Introduction to GitHub Actions</a>, Jenkins = <a href="https://brendanjameslynskey.github.io/Introduction_to_Jenkins/">Introduction to Jenkins</a>.</p>
+  <div class="cols cols-2">
+    <div>
+      <p class="kt"><b>Pull request (PR)</b> <a href="#/12">12</a> a proposed merge, where CI and review happen</p>
+      <p class="kt"><b>Branch protection</b> <a href="#/12">12</a> rules that guard a branch from direct pushes</p>
+      <p class="kt"><b>Ruleset</b> <a href="#/12">12</a> GitHub's newer, layered, visible branch rules</p>
+      <p class="kt"><b>Required status check</b> <a href="#/12">12</a> a named check that must pass to merge</p>
+      <p class="kt"><b>Required reviews</b> <a href="https://brendanjameslynskey.github.io/Introduction_to_GitHub_Actions/#/19">GHA 19</a> approvals needed before merging</p>
+      <p class="kt"><b>CODEOWNERS</b> <a href="#/12">12</a> file naming who must review which paths</p>
+      <p class="kt"><b>Force push</b> <a href="#/12">12</a> rewriting a branch's history on the remote</p>
+      <p class="kt"><b>Bypass list / admin enforcement</b> <a href="#/12">12</a> who, if anyone, may skip the rules</p>
+      <p class="kt"><b>Squash merge</b> <a href="#/12">12</a> a PR lands as one commit</p>
+      <p class="kt"><b>Green at HEAD</b> <a href="#/12">12</a> the latest commit passed every check</p>
+      <p class="kt"><b>CI status badge</b> <a href="#/12">12</a> README image of the latest run's result</p>
+      <p class="kt"><b>Dependabot</b> <a href="https://brendanjameslynskey.github.io/Introduction_to_GitHub_Actions/#/14">GHA 14</a> GitHub's bot that opens dependency-bump PRs</p>
+      <p class="kt"><b>workflow_dispatch</b> <a href="https://brendanjameslynskey.github.io/Introduction_to_GitHub_Actions/#/4">GHA 04</a> a manual Run workflow trigger</p>
+      <p class="kt"><b>Re-running a workflow</b> <a href="#/17">17</a> running the same commit's checks again</p>
+      <p class="kt"><b>Downstream (dependent) repo</b> <a href="#/17">17</a> a repo that installs yours</p>
+      <p class="kt"><b>Pinning to a commit</b> <a href="https://brendanjameslynskey.github.io/Introduction_to_GitHub_Actions/#/14">GHA 14</a> referencing one immutable SHA, not a branch</p>
+      <p class="kt"><b>repository_dispatch</b> <a href="https://brendanjameslynskey.github.io/Introduction_to_GitHub_Actions/#/23">GHA 23</a> one repo's CI starting another's</p>
+      <p class="kt"><b>Webhook</b> <a href="https://brendanjameslynskey.github.io/Introduction_to_Jenkins/#/10">Jenkins 10</a> the forge calls CI when something happens</p>
+      <p class="kt"><b>Scheduled (nightly) build</b> <a href="https://brendanjameslynskey.github.io/Introduction_to_Jenkins/#/10">Jenkins 10</a> a run on a timetable, not a push</p>
+      <p class="kt"><b>Concurrency group</b> <a href="https://brendanjameslynskey.github.io/Introduction_to_GitHub_Actions/#/18">GHA 18</a> runs that must not overlap</p>
+      <p class="kt"><b>Lockfile / frozen install</b> <a href="#/17">17</a> exact versions; CI refuses to change them</p>
+      <p class="kt"><b>Stale environment</b> <a href="#/17">17</a> a reused venv keeps an old dependency</p>
+    </div>
+    <div>
+      <p class="kt"><b>Pipeline as code</b> <a href="#/5">05</a> the pipeline lives in the repo as a file</p>
+      <p class="kt"><b>Runner / agent</b> <a href="#/15">15</a> the machine a job runs on</p>
+      <p class="kt"><b>Matrix build</b> <a href="https://brendanjameslynskey.github.io/Introduction_to_GitHub_Actions/#/6">GHA 06</a> one job run per combination of values</p>
+      <p class="kt"><b>Cache / cache key</b> <a href="#/24">24</a> saved downloads reused by later runs</p>
+      <p class="kt"><b>Artefact</b> <a href="#/13">13</a> a build output stored and promoted</p>
+      <p class="kt"><b>Service container</b> <a href="https://brendanjameslynskey.github.io/Introduction_to_GitHub_Actions/#/7">GHA 07</a> a database container beside the job</p>
+      <p class="kt"><b>Deployment environment</b> <a href="https://brendanjameslynskey.github.io/Introduction_to_GitHub_Actions/#/13">GHA 13</a> a named target with its own secrets/rules</p>
+      <p class="kt"><b>Shared library</b> <a href="https://brendanjameslynskey.github.io/Introduction_to_Jenkins/#/14">Jenkins 14</a> pipeline code shared by many repos</p>
+      <p class="kt"><b>Multibranch pipeline</b> <a href="https://brendanjameslynskey.github.io/Introduction_to_Jenkins/#/15">Jenkins 15</a> one Jenkins job per branch and PR</p>
+      <p class="kt"><b>Publishing to GitHub Pages</b> <a href="#/20">20</a> a branch served as a static site</p>
+      <p class="kt"><b>Quality gate</b> <a href="#/8">08</a> a threshold the pipeline enforces</p>
+      <p class="kt"><b>Lint</b> <a href="#/9">09</a> flag suspicious code without running it</p>
+      <p class="kt"><b>Typecheck</b> <a href="#/9">09</a> the compiler checks every type</p>
+      <p class="kt"><b>Format check</b> <a href="#/9">09</a> fail if any file isn't formatted</p>
+      <p class="kt"><b>actionlint</b> <a href="https://brendanjameslynskey.github.io/Introduction_to_GitHub_Actions/#/16">GHA 16</a> a linter for workflow files</p>
+      <p class="kt"><b>Lighthouse</b> <a href="#/9">09</a> Google's page auditor, scores 0-100</p>
+      <p class="kt"><b>Lighthouse CI (LHCI)</b> <a href="#/9">09</a> Lighthouse in CI, failing below a score</p>
+      <p class="kt"><b>Performance budget</b> <a href="#/9">09</a> the score or size limit a gate enforces</p>
+      <p class="kt"><b>Core Web Vitals</b> <a href="#/9">09</a> LCP, INP, CLS: real users' experience</p>
+      <p class="kt"><b>Coverage target</b> <a href="#/8">08</a> minimum share of code the tests run</p>
+      <p class="kt"><b>Unit / integration test</b> <a href="#/7">07</a> one unit alone / parts together</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════ SLIDE 28 — KEY TERMS 2 ═══════════════════════════════ -->
+<section data-background-color="#eaeff2">
+  <div class="slide-hdr">
+    <span class="tag">27</span>
+    <h2>Key Terms (2 of 2)</h2>
+  </div>
+  <div class="cols cols-2">
+    <div>
+      <p class="kt"><b>End-to-end (e2e) test</b> <a href="#/7">07</a> drive the whole app like a user</p>
+      <p class="kt"><b>Playwright</b> <a href="#/10">10</a> a browser-automation test runner</p>
+      <p class="kt"><b>e2e on a production build</b> <a href="#/10">10</a> test the bundle that ships</p>
+      <p class="kt"><b>Test fixture</b> <a href="#/10">10</a> fixed inputs a test runs against</p>
+      <p class="kt"><b>Golden / headline-number check</b> <a href="#/10">10</a> output must equal a reviewed answer</p>
+      <p class="kt"><b>Parity test (bit-exact)</b> <a href="#/10">10</a> two implementations must agree exactly</p>
+      <p class="kt"><b>Differential test</b> <a href="#/10">10</a> same random inputs through two versions</p>
+      <p class="kt"><b>Property-based test</b> <a href="#/10">10</a> generated inputs against a stated rule</p>
+      <p class="kt"><b>Mutation testing</b> <a href="#/10">10</a> planted bugs the tests should catch</p>
+      <p class="kt"><b>Flaky test</b> <a href="#/10">10</a> passes and fails on the same code</p>
+      <p class="kt"><b>Performance regression gate</b> <a href="#/10">10</a> fail if a benchmark slows past noise</p>
+      <p class="kt"><b>Silent fallback</b> <a href="#/23">23</a> an error swallowed and replaced by a default</p>
+      <p class="kt"><b>Preview deployment</b> <a href="#/20">20</a> a throwaway copy built from a branch</p>
+      <p class="kt"><b>Production deployment</b> <a href="#/20">20</a> the one the real domain serves</p>
+      <p class="kt"><b>Git-integrated vs CLI deploy</b> <a href="#/20">20</a> deploy on push / deploy a folder</p>
+      <p class="kt"><b>Clean export (git archive)</b> <a href="#/20">20</a> deploy exactly the commit, nothing local</p>
+      <p class="kt"><b>Environment variable</b> <a href="#/20">20</a> a setting the app reads at run time</p>
+      <p class="kt"><b>Secret / masking</b> <a href="https://brendanjameslynskey.github.io/Introduction_to_GitHub_Actions/#/13">GHA 13</a> encrypted setting, shown as *** in logs</p>
+      <p class="kt"><b>Sensitive (write-only) variable</b> <a href="#/20">20</a> can't be read back after saving</p>
+      <p class="kt"><b>OAuth callback URL</b> <a href="#/20">20</a> where sign-in returns the user</p>
+      <p class="kt"><b>Custom domain</b> <a href="#/20">20</a> your own name for the production site</p>
+    </div>
+    <div>
+      <p class="kt"><b>Redirect (308)</b> <a href="#/20">20</a> old URL permanently forwards to the new</p>
+      <p class="kt"><b>OIDC</b> <a href="#/18">18</a> short-lived cloud credentials, no stored key</p>
+      <p class="kt"><b>Least privilege</b> <a href="#/18">18</a> grant only the access a job needs</p>
+      <p class="kt"><b>Schema migration</b> <a href="#/20">20</a> a versioned change to the database</p>
+      <p class="kt"><b>Seeding</b> <a href="#/20">20</a> loading starter rows after migrating</p>
+      <p class="kt"><b>Migrate before deploy</b> <a href="#/20">20</a> schema change first, then new code</p>
+      <p class="kt"><b>Expand/contract</b> <a href="#/20">20</a> add, switch, then remove, across releases</p>
+      <p class="kt"><b>Blue/green</b> <a href="#/19">19</a> two environments, switch traffic</p>
+      <p class="kt"><b>Canary release</b> <a href="#/19">19</a> a small share of traffic first</p>
+      <p class="kt"><b>Feature flag</b> <a href="#/19">19</a> code shipped dark, switched on at run time</p>
+      <p class="kt"><b>Rollback</b> <a href="#/22">22</a> return to the previous good version</p>
+      <p class="kt"><b>Post-deploy verification</b> <a href="#/21">21</a> checking the live system after a deploy</p>
+      <p class="kt"><b>Health endpoint</b> <a href="#/21">21</a> URL reporting if dependencies are OK</p>
+      <p class="kt"><b>Smoke check</b> <a href="#/21">21</a> fast, shallow test of the live system</p>
+      <p class="kt"><b>Smoke test on real data</b> <a href="#/21">21</a> exercise code paths empty data skips</p>
+      <p class="kt"><b>Runtime logs / error groups</b> <a href="#/21">21</a> the platform's record of live errors</p>
+      <p class="kt"><b>Runbook</b> <a href="#/21">21</a> the written procedure for an operation</p>
+      <p class="kt"><b>Render before write</b> <a href="#/21">21</a> do what can fail before storing</p>
+      <p class="kt"><b>Works locally, fails on the platform</b> <a href="#/23">23</a> production's runtime differs from CI's</p>
+      <p class="kt"><b>Module loader (ESM vs require)</b> <a href="#/23">23</a> how a runtime loads JS packages</p>
+      <p class="kt"><b>DORA metrics</b> <a href="#/25">25</a> four delivery-performance measures</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════ SLIDE 29 — SUMMARY ═══════════════════════════════ -->
+<section data-background-color="#eaeff2">
+  <div class="slide-hdr">
+    <span class="tag">28</span>
     <h2>Summary &amp; Next Steps</h2>
   </div>
   <div class="cols cols-2">
@@ -1004,7 +1438,8 @@ jobs:
           <li>Pipeline stages, artefact promotion, environment strategy</li>
           <li>Testing pyramid and quality gates</li>
           <li>Docker, GitHub Actions, secrets security</li>
-          <li>Deployment strategies and observability</li>
+          <li>Protected branches, required checks, CI across repos</li>
+          <li>Deployment strategies, migrations, smoke checks and observability</li>
           <li>DORA metrics for measuring improvement</li>
         </ul>
       </div>
@@ -1014,10 +1449,10 @@ jobs:
         <h3 class="g">Recommended next steps</h3>
         <ol style="padding-left:1.2em;">
           <li>Add a <code>.github/workflows/ci.yml</code> to your next project</li>
-          <li>Set up unit tests with a coverage gate</li>
+          <li>Set up unit tests with a coverage gate; make CI a required check on <code>main</code></li>
           <li>Containerise your app with a multi-stage Dockerfile</li>
           <li>Add a staging environment and promote artefacts, not code</li>
-          <li>Instrument with Prometheus + Grafana and set a rollback alert</li>
+          <li>Instrument with Prometheus + Grafana, add a health endpoint and a post-deploy smoke check, and set a rollback alert</li>
           <li>Measure your DORA metrics — establish a baseline</li>
         </ol>
       </div>
