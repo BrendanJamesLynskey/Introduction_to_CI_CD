@@ -641,6 +641,7 @@ Canary + feature flags is the combination used by most high-velocity teams (Netf
 - **Preview deployment**: a throwaway copy of the app built from a branch or PR, with its own URL, for checking before merge. **Production deployment**: the one the real domain serves. On Vercel, by default, the production branch (usually `main`) deploys to production and other branches and PRs get previews.
 - **Git-integrated vs CLI deploy**: with Git integration the platform deploys on every push. A CLI deploy (`vercel deploy --prod`) ships the folder you run it in, so deploy a **clean export** (`git archive HEAD`), not a working tree with local files in it.
 - **GitHub Pages**: GitHub serves a branch (or a workflow's output) as a static site. These decks publish that way: push to `main` and the site updates within minutes.
+- **Deployment protection**: a sign-in gate on preview URLs (Vercel Authentication), so a smoke check gets a 401 or a login page. A **protection bypass** token in the `x-vercel-protection-bypass` header lets automation through; keep it secret.
 - **Custom domain**: your own name for the production site. **Redirect (308)**: when the domain moves, the old URL should answer 308 Permanent Redirect, which keeps the method and body (a 301 may turn a POST into a GET).
 
 ### Settings that live outside git
@@ -655,7 +656,7 @@ Canary + feature flags is the combination used by most high-velocity teams (Netf
 - **Migrate before deploy**: run the new migration on production first, then deploy the code that needs it. The old code keeps running in between.
 - **Expand/contract**: what makes that safe. Expand (add nullable columns or new tables that old code ignores), deploy, backfill, then contract (drop the old) in a later release.
 
-[Vercel environments](https://vercel.com/docs/deployments/environments) · [write-only variables](https://vercel.com/docs/environment-variables/sensitive-environment-variables) · [HTTP 308](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status/308) · [expand/contract (Fowler)](https://martinfowler.com/bliki/ParallelChange.html)
+[Vercel environments](https://vercel.com/docs/deployments/environments) · [deployment protection](https://vercel.com/docs/deployment-protection) · [protection bypass](https://vercel.com/docs/deployment-protection/methods-to-bypass-deployment-protection/protection-bypass-automation) · [write-only variables](https://vercel.com/docs/environment-variables/sensitive-environment-variables) · [HTTP 308](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status/308) · [expand/contract (Fowler)](https://martinfowler.com/bliki/ParallelChange.html)
 
 ---
 
@@ -874,6 +875,7 @@ Every CI/CD term used on this GitHub's projects, with the slide that explains it
 | Performance regression gate | fail if a benchmark slows past noise | [10](#slide-10--tests-that-guard-the-results) |
 | Silent fallback | an error swallowed and replaced by a default | [23](#slide-23--case-study-two-failures-ci-did-not-catch) |
 | Preview deployment | a throwaway copy built from a branch | [20](#slide-20--deploying-safely-previews-settings-and-migrations) |
+| Deployment protection / protection bypass | a login gate on deployment URLs; a token lets checks through | [20](#slide-20--deploying-safely-previews-settings-and-migrations) |
 | Production deployment | the one the real domain serves | [20](#slide-20--deploying-safely-previews-settings-and-migrations) |
 | Git-integrated vs CLI deploy | deploy on push / deploy a folder | [20](#slide-20--deploying-safely-previews-settings-and-migrations) |
 | Clean export (git archive) | deploy exactly the commit, nothing local | [20](#slide-20--deploying-safely-previews-settings-and-migrations) |

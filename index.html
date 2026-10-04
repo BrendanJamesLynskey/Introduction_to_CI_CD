@@ -1073,6 +1073,7 @@ jobs:
           <li><b>Preview deployment</b>: a throwaway copy of the app built from a branch or PR, with its own URL, for checking before merge. <b>Production deployment</b>: the one the real domain serves. On Vercel, by default, the production branch (usually <code>main</code>) deploys to production and other branches and PRs get previews.</li>
           <li><b>Git-integrated vs CLI deploy</b>: with Git integration the platform deploys on every push. A CLI deploy (<code>vercel deploy --prod</code>) ships the folder you run it in, so deploy a <b>clean export</b> (<code>git archive HEAD</code>), not a working tree with local files in it.</li>
           <li><b>GitHub Pages</b>: GitHub serves a branch (or a workflow's output) as a static site. These decks publish that way: push to <code>main</code> and the site updates within minutes.</li>
+          <li><b>Deployment protection</b>: a sign-in gate on preview URLs (Vercel Authentication), so a smoke check gets a 401 or a login page. A <b>protection bypass</b> token in the <code>x-vercel-protection-bypass</code> header lets automation through; keep it secret.</li>
           <li><b>Custom domain</b>: your own name for the production site. <b>Redirect (308)</b>: when the domain moves, the old URL should answer 308 Permanent Redirect, which keeps the method and body (a 301 may turn a POST into a GET).</li>
         </ul>
       </div>
@@ -1094,7 +1095,7 @@ jobs:
           <li><b>Expand/contract</b>: what makes that safe. Expand (add nullable columns or new tables that old code ignores), deploy, backfill, then contract (drop the old) in a later release.</li>
         </ul>
       </div>
-      <p class="cap"><a href="https://vercel.com/docs/deployments/environments">Vercel environments</a> · <a href="https://vercel.com/docs/environment-variables/sensitive-environment-variables">write-only variables</a> · <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status/308">HTTP 308</a> · <a href="https://martinfowler.com/bliki/ParallelChange.html">expand/contract (Fowler)</a></p>
+      <p class="cap"><a href="https://vercel.com/docs/deployments/environments">Vercel environments</a> · <a href="https://vercel.com/docs/deployment-protection">deployment protection</a> · <a href="https://vercel.com/docs/deployment-protection/methods-to-bypass-deployment-protection/protection-bypass-automation">protection bypass</a> · <a href="https://vercel.com/docs/environment-variables/sensitive-environment-variables">write-only variables</a> · <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status/308">HTTP 308</a> · <a href="https://martinfowler.com/bliki/ParallelChange.html">expand/contract (Fowler)</a></p>
     </div>
   </div>
 </section>
@@ -1385,6 +1386,7 @@ jobs:
       <p class="kt"><b>Performance regression gate</b> <a href="#/10">10</a> fail if a benchmark slows past noise</p>
       <p class="kt"><b>Silent fallback</b> <a href="#/23">23</a> an error swallowed and replaced by a default</p>
       <p class="kt"><b>Preview deployment</b> <a href="#/20">20</a> a throwaway copy built from a branch</p>
+      <p class="kt"><b>Deployment protection / protection bypass</b> <a href="#/20">20</a> a login gate on deployment URLs; a token lets checks through</p>
       <p class="kt"><b>Production deployment</b> <a href="#/20">20</a> the one the real domain serves</p>
       <p class="kt"><b>Git-integrated vs CLI deploy</b> <a href="#/20">20</a> deploy on push / deploy a folder</p>
       <p class="kt"><b>Clean export (git archive)</b> <a href="#/20">20</a> deploy exactly the commit, nothing local</p>
