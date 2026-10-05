@@ -311,7 +311,7 @@ Simulators and numeric code need tests that pin numbers, not only behaviour. Eve
 
 ### Pinning the numbers
 
-- **Test fixture**: the fixed inputs a test runs against, such as a saved trace, a config file or a seeded database. Commit them: a fixture hidden by `.gitignore` passed locally and failed CI on 3 Oct 2026.
+- **Test fixture**: the fixed inputs a test runs against (a saved trace, a config, a seeded database). Commit them: one hidden by `.gitignore` failed CI on 3 Oct 2026. An **up-to-date check** is CI regenerating such files and failing on any difference.
 - **Golden test** (or **headline-number check**): output must equal a saved, reviewed answer. FHE_Accelerator_Sim's CI asserts its ARK-class baseline is still 13.94 ms per bootstrap; changing it is a deliberate re-bless.
 - **Parity test**: two implementations of one model must agree. The JavaScript port of Disaggregated_Inference_Sim is **bit-exact** with the Python (identical floats); only transcendental functions get a tolerance.
 - **Differential test**: the same random inputs go through two implementations and the outputs are compared (Rust_DES_Kernel against the Python simulator).
@@ -554,6 +554,11 @@ When one repo installs another, a push to the library can break the app without 
 - **Downstream (dependent) repo**: a repo that installs yours. Its CI is the real test of an upstream change. Here, Rust_DES_Kernel and Torch_Sim_Frontend install Disaggregated_Inference_Sim; RTL_CoSim_NTT, SystemC_Accelerator_Model and Memory_System_Sim install FHE_Accelerator_Sim.
 - **Tracking a branch vs pinning**: `pkg @ git+URL` installs whatever `main` is today; `git+URL@<sha>` pins one commit. Tracking catches breakage at once but can turn a green repo red overnight. Pinning is reproducible but needs deliberate bumps.
 - **Re-running a workflow**: runs the same commit's checks again (same `GITHUB_SHA`, within 30 days). An unpinned install resolves again, so a re-run tests the new upstream: `gh run rerun <id>`, or `gh workflow run ci.yml` where the workflow has a manual trigger.
+
+### Copying instead of installing
+
+- **Vendoring**: copying another repo's file into yours from a pinned commit, with the commit and SHA-256 recorded (`VENDORED.json`) so a test can check the copy.
+- **Scheduled drift check**: a weekly cron job that re-fetches pinned upstream files and flags any that changed, so re-pinning is a decision.
 
 ### Keeping installs honest
 
@@ -834,6 +839,8 @@ Every CI/CD term used on this GitHub's projects, with the slide that explains it
 | Concurrency group | runs that must not overlap | [GHA 18](https://brendanjameslynskey.github.io/Introduction_to_GitHub_Actions/#/18) |
 | Lockfile / frozen install | exact versions; CI refuses to change them | [17](#slide-17--ci-across-repositories) |
 | Stale environment | a reused venv keeps an old dependency | [17](#slide-17--ci-across-repositories) |
+| Vendoring | a pinned, checked copy of another repo's file | [17](#slide-17--ci-across-repositories) |
+| Scheduled drift check | a timed run that flags upstream changes to pins | [17](#slide-17--ci-across-repositories) |
 | Pipeline as code | the pipeline lives in the repo as a file | [05](#slide-05--the-cicd-pipeline) |
 | Runner / agent | the machine a job runs on | [15](#slide-15--tool-deep-dive-github-actions) |
 | Matrix build | one job run per combination of values | [GHA 06](https://brendanjameslynskey.github.io/Introduction_to_GitHub_Actions/#/6) |
@@ -869,6 +876,7 @@ Every CI/CD term used on this GitHub's projects, with the slide that explains it
 | Golden / headline-number check | output must equal a reviewed answer | [10](#slide-10--tests-that-guard-the-results) |
 | Parity test (bit-exact) | two implementations must agree exactly | [10](#slide-10--tests-that-guard-the-results) |
 | Differential test | same random inputs through two versions | [10](#slide-10--tests-that-guard-the-results) |
+| Up-to-date check | CI regenerates outputs and fails on a difference | [10](#slide-10--tests-that-guard-the-results) |
 | Property-based test | generated inputs against a stated rule | [10](#slide-10--tests-that-guard-the-results) |
 | Mutation testing | planted bugs the tests should catch | [10](#slide-10--tests-that-guard-the-results) |
 | Flaky test | passes and fails on the same code | [10](#slide-10--tests-that-guard-the-results) |

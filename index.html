@@ -589,7 +589,7 @@ branch:   76.1%  ✘ (< 75%)  → FAIL</code></pre>
       <div class="card green">
         <h3 class="g">Pinning the numbers</h3>
         <ul>
-          <li><b>Test fixture</b>: the fixed inputs a test runs against, such as a saved trace, a config file or a seeded database. Commit them: a fixture hidden by <code>.gitignore</code> passed locally and failed CI on 3 Oct 2026.</li>
+          <li><b>Test fixture</b>: the fixed inputs a test runs against (a saved trace, a config, a seeded database). Commit them: one hidden by <code>.gitignore</code> failed CI on 3 Oct 2026. An <b>up-to-date check</b> is CI regenerating such files and failing on any difference.</li>
           <li><b>Golden test</b> (or <b>headline-number check</b>): output must equal a saved, reviewed answer. FHE_Accelerator_Sim's CI asserts its ARK-class baseline is still 13.94 ms per bootstrap; changing it is a deliberate re-bless.</li>
           <li><b>Parity test</b>: two implementations of one model must agree. The JavaScript port of Disaggregated_Inference_Sim is <b>bit-exact</b> with the Python (identical floats); only transcendental functions get a tolerance.</li>
           <li><b>Differential test</b>: the same random inputs go through two implementations and the outputs are compared (Rust_DES_Kernel against the Python simulator).</li>
@@ -943,6 +943,13 @@ jobs:
           <li><b>Downstream (dependent) repo</b>: a repo that installs yours. Its CI is the real test of an upstream change. Here, Rust_DES_Kernel and Torch_Sim_Frontend install Disaggregated_Inference_Sim; RTL_CoSim_NTT, SystemC_Accelerator_Model and Memory_System_Sim install FHE_Accelerator_Sim.</li>
           <li><b>Tracking a branch vs pinning</b>: <code>pkg @ git+URL</code> installs whatever <code>main</code> is today; <code>git+URL@&lt;sha&gt;</code> pins one commit. Tracking catches breakage at once but can turn a green repo red overnight. Pinning is reproducible but needs deliberate bumps.</li>
           <li><b>Re-running a workflow</b>: runs the same commit's checks again (same <code>GITHUB_SHA</code>, within 30 days). An unpinned install resolves again, so a re-run tests the new upstream: <code>gh run rerun &lt;id&gt;</code>, or <code>gh workflow run ci.yml</code> where the workflow has a manual trigger.</li>
+        </ul>
+      </div>
+      <div class="card purple" style="margin-top:.4em;">
+        <h3 class="p">Copying instead of installing</h3>
+        <ul>
+          <li><b>Vendoring</b>: copying another repo's file into yours from a pinned commit, with the commit and SHA-256 recorded (<code>VENDORED.json</code>) so a test can check the copy.</li>
+          <li><b>Scheduled drift check</b>: a weekly cron job that re-fetches pinned upstream files and flags any that changed, so re-pinning is a decision.</li>
         </ul>
       </div>
     </div>
@@ -1337,8 +1344,10 @@ jobs:
       <p class="kt"><b>Concurrency group</b> <a href="https://brendanjameslynskey.github.io/Introduction_to_GitHub_Actions/#/18">GHA 18</a> runs that must not overlap</p>
       <p class="kt"><b>Lockfile / frozen install</b> <a href="#/17">17</a> exact versions; CI refuses to change them</p>
       <p class="kt"><b>Stale environment</b> <a href="#/17">17</a> a reused venv keeps an old dependency</p>
+      <p class="kt"><b>Vendoring</b> <a href="#/17">17</a> a pinned, checked copy of another repo's file</p>
     </div>
     <div>
+      <p class="kt"><b>Scheduled drift check</b> <a href="#/17">17</a> a timed run that flags upstream changes to pins</p>
       <p class="kt"><b>Pipeline as code</b> <a href="#/5">05</a> the pipeline lives in the repo as a file</p>
       <p class="kt"><b>Runner / agent</b> <a href="#/15">15</a> the machine a job runs on</p>
       <p class="kt"><b>Matrix build</b> <a href="https://brendanjameslynskey.github.io/Introduction_to_GitHub_Actions/#/6">GHA 06</a> one job run per combination of values</p>
@@ -1380,6 +1389,7 @@ jobs:
       <p class="kt"><b>Golden / headline-number check</b> <a href="#/10">10</a> output must equal a reviewed answer</p>
       <p class="kt"><b>Parity test (bit-exact)</b> <a href="#/10">10</a> two implementations must agree exactly</p>
       <p class="kt"><b>Differential test</b> <a href="#/10">10</a> same random inputs through two versions</p>
+      <p class="kt"><b>Up-to-date check</b> <a href="#/10">10</a> CI regenerates outputs and fails on a difference</p>
       <p class="kt"><b>Property-based test</b> <a href="#/10">10</a> generated inputs against a stated rule</p>
       <p class="kt"><b>Mutation testing</b> <a href="#/10">10</a> planted bugs the tests should catch</p>
       <p class="kt"><b>Flaky test</b> <a href="#/10">10</a> passes and fails on the same code</p>
@@ -1394,9 +1404,9 @@ jobs:
       <p class="kt"><b>Secret / masking</b> <a href="https://brendanjameslynskey.github.io/Introduction_to_GitHub_Actions/#/13">GHA 13</a> encrypted setting, shown as *** in logs</p>
       <p class="kt"><b>Sensitive (write-only) variable</b> <a href="#/20">20</a> can't be read back after saving</p>
       <p class="kt"><b>OAuth callback URL</b> <a href="#/20">20</a> where sign-in returns the user</p>
-      <p class="kt"><b>Custom domain</b> <a href="#/20">20</a> your own name for the production site</p>
     </div>
     <div>
+      <p class="kt"><b>Custom domain</b> <a href="#/20">20</a> your own name for the production site</p>
       <p class="kt"><b>Redirect (308)</b> <a href="#/20">20</a> old URL permanently forwards to the new</p>
       <p class="kt"><b>OIDC</b> <a href="#/18">18</a> short-lived cloud credentials, no stored key</p>
       <p class="kt"><b>Least privilege</b> <a href="#/18">18</a> grant only the access a job needs</p>
